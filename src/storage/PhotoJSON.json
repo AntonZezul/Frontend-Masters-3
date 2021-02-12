@@ -1,0 +1,52 @@
+[
+    {
+        "id": 0,
+        "photo": "/pexels-photo-261187.jpeg",
+        "tag": "architecture"
+    },
+    {
+        "id": 1,
+        "photo": "/pexels-photo-261146.jpeg",
+        "tag": "architecture"
+    },
+    {
+        "id": 2,
+        "photo": "/pexels-photo-24464.jpg",
+        "tag": "architecture"
+    },
+    {
+        "id": 3,
+        "photo": "/pexels-photo-27411.jpg",
+        "tag": "people"
+    },
+    {
+        "id": 4,
+        "photo": "/pexels-photo-323780.jpeg",
+        "tag": "architecture"
+    },
+    {
+        "id": 5,
+        "photo": "/pexels-photo-221506.jpeg",
+        "tag": "architecture"
+    },
+    {
+        "id": 6,
+        "photo": "/pexels-photo-186077.jpeg",
+        "tag": "architecture"
+    },
+    {
+        "id": 7,
+        "photo": "/food-salad-healthy-lunch.jpg",
+        "tag": "food"
+    },
+    {
+        "id": 8,
+        "photo": "/landscape-meadow-field-mountains-66874.jpeg",
+        "tag": "nature"
+    },
+    {
+        "id": 9,
+        "photo": "/pexels-photo-210019.jpeg",
+        "tag": "cars"
+    }
+]

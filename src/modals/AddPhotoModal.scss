@@ -1,0 +1,100 @@
+#add_photo_modal{
+	padding-right: 0;
+
+	.modal-dialog{
+		display: flex;
+	    align-items: center;
+	    margin: 0 auto;
+	    height: 100%;
+	    @media only screen and (min-width: 700px){
+		    &{
+		        max-width: 700px;
+		    }
+		}
+		@media only screen and (max-width: 576px){
+		    &{
+		        margin: auto 2.5rem;
+		    }
+		}
+
+	    .modal-content{
+	    	background-color: transparent;
+    		border: none;
+
+    		.close{
+    			color: #ffffff;
+			    text-shadow: none;
+			    opacity: .8;
+			    margin: 1rem 0 1rem auto;
+
+			    span{
+			    	font-size: 16px;
+				    letter-spacing: 2px;
+				    text-align: center;
+			    }
+    		}
+    		.modal-content-without-close{
+    			background-color: white;
+			    border: 1px solid rgba(0,0,0,.2);
+			    border-radius: .3rem;
+
+			    .modal-header{
+			    	border-bottom: none;
+                    display: block;
+                    
+                    h5{
+                        color: #4f4f4f;
+                        font-weight: bold;
+                        letter-spacing: 1;
+                    }
+			    }
+			    .modal-body{
+			    	border: darkgray dashed 2px;
+				    margin: 0 20px;
+                    text-align: center;
+                    
+                    img{
+                        margin: 20px 0;
+                    }
+                    #move_photo_text{
+                        margin: 5px 0;
+                        color: darkgrey; 
+                        font-weight: bold;
+                    }
+                    #or_text{
+                        margin: 5px 0;
+                        color: #bababa;
+                    }
+
+				    .upload_button{
+				    	background-color:#ffffff;
+					    display:inline-block;
+					    color:darkgray;
+					    font-size:medium;
+					    font-weight: 500;
+					    padding:10px 30px;
+					    text-decoration:none;
+					    border: darkgray solid 3px;
+					    border-radius: 3px;
+					    margin: 20px 0;
+					    &:hover{
+					    	background-color: darkgray;
+    						color:#ffffff;
+					    }
+					    &:active{
+					    	position:relative;
+    						top:3px;
+					    }
+				    }
+			    }
+			    .modal-footer{
+                    border-top: none;
+                    
+                    img{
+                        margin: 6px 9px 8px 0;
+                    }
+			    }
+    		}
+	    }
+	}
+}

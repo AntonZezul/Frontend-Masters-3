@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1, 
+    "photo": "/landscape-meadow-field-mountains-66874.jpeg",
+    "theme": "PRÍRODA",
+    "tag":"nature"
+  },
+  {
+    "id": 2,
+    "photo": "/pexels-photo-261187.jpeg",
+    "theme": "ARCHITEKTÚRA",
+    "tag":"architecture"
+  },
+  {
+    "id": 3,
+    "photo": "/pexels-photo-27411.jpg",
+    "theme": "ĽUDIA",
+    "tag":"people"
+  },
+  {
+    "id": 4,
+    "photo": "/food-salad-healthy-lunch.jpg",
+    "theme": "JEDLO",
+    "tag":"food"
+  },
+  {
+    "id": 5,
+    "photo": "/pexels-photo-210019.jpeg",
+    "theme": "AUTÁ",
+    "tag":"cars"
+  }
+]

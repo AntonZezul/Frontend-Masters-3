@@ -1,0 +1,46 @@
+.photo_box_add{
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    min-height: 200px;
+    max-width: calc(100%/4 - 40px - 1px);
+    margin: 1rem;
+    border-radius: 7px;
+    box-shadow: -1px 1px 6px 1px rgba(0,0,0,0.3) ;
+    transition: bottom 600ms;
+    cursor: pointer;
+    background-color: white;
+    opacity: 0.8;
+    &:hover{
+        bottom: 10px;
+    }
+    @media only screen and (max-width: 1433px){
+        &{
+            max-width: calc(100%/3 - 43px - 1px);
+        }
+    }
+    @media only screen and (max-width: 940px){
+        &{
+            max-width: calc(100%/2 - 48px - 1px);
+        }
+    }
+    @media only screen and (max-width: 690px){
+        &{
+            max-width: calc(100% - 64px - 1px);
+        }
+    }
+    @media only screen and (max-width: 320px){
+        &{
+            max-width: calc(100% - 64px - 1px);
+        }
+    }
+
+    #add_photo_category{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        width: 100%;
+    }
+}

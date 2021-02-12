@@ -1,0 +1,93 @@
+#add_category_modal{
+	padding-right: 0;
+
+	.modal-dialog{
+		display: flex;
+	    align-items: center;
+	    margin: 0 auto;
+	    height: 100%;
+	    @media only screen and (min-width: 700px){
+		    &{
+		        max-width: 700px;
+		    }
+		}
+		@media only screen and (max-width: 576px){
+		    &{
+		        margin: auto 2.5rem;
+		    }
+		}
+
+	    .modal-content{
+	    	background-color: transparent;
+    		border: none;
+
+    		.close{
+    			color: #ffffff;
+			    text-shadow: none;
+			    opacity: .8;
+			    margin: 1rem 0 1rem auto;
+			    &:hover{
+			    	color: #ffffff;
+    				opacity: 1;
+			    }
+			    span{
+			    	font-size: 16px;
+				    letter-spacing: 2px;
+				    text-align: center;
+			    }
+    		}
+	    }
+	    .modal-content-without-close{
+	    	background-color: white;
+		    border: 1px solid rgba(0, 0, 0, .2);
+		    border-radius: .3rem;
+
+		    .modal-header{
+		    	border-bottom: none;
+                margin: 15px;
+                
+                h5{
+                    color: #4f4f4f;
+                    font-weight: bold;
+                    letter-spacing: 1px;
+                }
+    			@media only screen and (max-width: 567px) {
+			    	&{
+			        justify-content: space-around;
+			    	}
+		    	}
+	    	}
+	    	.modal-footer{
+				display: flex;
+				flex-wrap: inherit;
+		    	border-top: none;
+			    justify-content: space-between;
+			    margin: 1.75rem;
+			    padding: 0;
+                border-bottom: 2px solid #dee2e6;
+                
+                p{
+                    margin-bottom: 12px;
+                }
+			    @media only screen and (max-width: 567px) {
+				    &{
+				        justify-content: space-around;
+				    }
+				}
+
+			    button{
+			    	padding: 13px 40px;
+				    display: flex;
+				    align-items: center;
+				    letter-spacing: 1px;
+				    font-size: medium;
+                    margin-bottom: 12px;
+                    
+                    img{
+                        margin: 6px 9px 8px 0;
+                    }
+			    }
+		    }
+		}
+	}
+}
