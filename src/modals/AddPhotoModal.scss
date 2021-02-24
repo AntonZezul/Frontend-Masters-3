@@ -52,6 +52,10 @@
 			    	border: darkgray dashed 2px;
 				    margin: 0 20px;
                     text-align: center;
+					
+					input[type=file]{
+						display: none;
+					}
                     
                     img{
                         margin: 20px 0;

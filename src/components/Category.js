@@ -17,7 +17,11 @@ const Category = (props) => {
         style={{ textDecoration: "none" }}
       >
         <div className="photo">
-          <img className="img-photo_gallery" src={props.photo} alt={"box"} />
+          <img
+            className="img-photo_gallery"
+            src={props.photo}
+            alt={props.alt}
+          />
         </div>
         <div className="photo_info">
           <p className="photo_text">{props.theme}</p>

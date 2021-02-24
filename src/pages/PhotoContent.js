@@ -12,12 +12,14 @@ export default function PhotoContent(props) {
   const location = useLocation();
   const [image, setImage] = useState("");
   const [index, setIndex] = useState();
+  // const [background, setBackground] = useState([]);
   const URL_IMAGE = "http://api.programator.sk/images/1125x750/";
+  const background = []
 
   // const firstImg = PhotoJSON.filter(i=>i['tag'] === id)[0]
   // setTimeout(() => {
-  //   props.bg(firstImg.photo)
-  // }, 200);
+  //   props.bg(`http://api.programator.sk/images/1125x750/${background[0]}`)
+  // }, 0);
 
   const arrID = props.dataPhotos.map((_, i) => i);
   const arrPhoto = props.dataPhotos.map(
@@ -51,6 +53,7 @@ export default function PhotoContent(props) {
 
   const displayPhotos = () => {
     return props.dataPhotos.map((data, i) => {
+      background.push(data.fullpath)
       return (
         <Photo
           key={i}
@@ -66,6 +69,8 @@ export default function PhotoContent(props) {
       <HeaderContent headerName={location.state.pass} icon={true} />
       <div className="img-area">
         {displayPhotos()}
+        {/* {()=>setBackground(props.dataPhotos)} */}
+        {/* {console.log(background)} */}
         <PhotoView
           photo={image}
           nextIcon={() => nextIc(index)}

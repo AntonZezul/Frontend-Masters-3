@@ -4,31 +4,37 @@ import "./AddCategoryModal.scss";
 export default function AddCategoryModal(props) {
   const [value, setValue] = useState("");
   const [validated, setValidated] = useState(false);
+  const [focus, setFocus] = useState(false)
   const headers = {
     "Content-Type": "application/json",
   };
+  const errorText = document.querySelector(".invalid-feedback");
+  const errorBorder = document.querySelector("#categoryInput")
 
   const inputHandler = () => {
-    const errorDiv = document.querySelector('.invalid-feedback')
-    console.log(value)
-    if (value.length < 5 || value.includes('/') ){
-      errorDiv.style.display = 'block'
-      console.log('true')
+    // if (value.length < 5 ) {
+      errorText.style.opacity = 0;
+      errorBorder.style.border = 'none'
+      // errorBorder.style.border = '3px solid red'
+      
+      console.log("true");
       // if (errorDiv.style.display !== 'block'){
       //   errorDiv.style.display = 'block'
       // }
       // else errorDiv.style.display = 'none'
-    }
-    else errorDiv.style.display = 'none'
-
-
-  }
+    // } else errorText.style.opacity = 0;
+  };
 
   const onClickButton = () => {
-    if (!value || value === "/") {
+    if (!value || value.includes("/") ) {
+      errorText.style.opacity = 1;
+      errorBorder.style.border = '2px solid rgba(255,0,0, .7)'
+      // setFocus(false)
+
       // console.log("Error");
       // console.log(errorDiv)
     } else {
+      errorBorder.style.border = '2px solid rgba(40,167,69, .7)'
       return fetch("http://api.programator.sk/gallery", {
         method: "POST",
         body: JSON.stringify({
@@ -77,33 +83,37 @@ export default function AddCategoryModal(props) {
               <h5 className="modal-title">PRIDAŤ KATEGÓRIU</h5>
             </div>
             <div className="modal-footer">
-              
               {/* <form name="myForm"> */}
-                <div className="input-group mb-3">
+              <div className="col">
+                <div className="input-group">
                   <input
                     id="categoryInput"
                     name="fname"
                     type="text"
                     placeholder="ZADAJTE NÁZOV KATEGÓRIE"
-                    className="form-control"
+                    className="form-control was-validated"
                     aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-default"
                     style={{ border: "none" }}
                     value={value}
                     onChange={(e) => {
-                      setValue(e.target.value)
-                      inputHandler()
+                      setValue(e.target.value);
+                      inputHandler();
                     }}
+                    onFocus={()=>setFocus(true)}
+                    required
                   />
                 </div>
-                <div className="invalid-feedback">Please provide a valid zip.</div>
+                <div className="invalid-feedback" style={{display: "block", opacity: 0}}>
+                Názov galérie nemôže obsahovať znak '/'. A nemôže byť prázdna.
+                </div>
+              </div>
               <button
                 onClick={() => onClickButton()}
                 type="submit"
                 value="Submit"
                 className="btn btn-success"
-              > 
-
+              >
                 <img
                   src={process.env.PUBLIC_URL + "/icons/add-icon.svg"}
                   alt={"add-icon"}
