@@ -8,18 +8,11 @@ import { useEffect, useState } from "react";
 import AddPhotoModal from "../modals/AddPhotoModal";
 
 export default function PhotoContent(props) {
-  const { id } = useParams();
   const location = useLocation();
   const [image, setImage] = useState("");
   const [index, setIndex] = useState();
-  // const [background, setBackground] = useState([]);
   const URL_IMAGE = "http://api.programator.sk/images/1125x750/";
   const background = []
-
-  // const firstImg = PhotoJSON.filter(i=>i['tag'] === id)[0]
-  // setTimeout(() => {
-  //   props.bg(`http://api.programator.sk/images/1125x750/${background[0]}`)
-  // }, 0);
 
   const arrID = props.dataPhotos.map((_, i) => i);
   const arrPhoto = props.dataPhotos.map(
@@ -69,15 +62,13 @@ export default function PhotoContent(props) {
       <HeaderContent headerName={location.state.pass} icon={true} />
       <div className="img-area">
         {displayPhotos()}
-        {/* {()=>setBackground(props.dataPhotos)} */}
-        {/* {console.log(background)} */}
         <PhotoView
           photo={image}
           nextIcon={() => nextIc(index)}
           prevIcon={() => prevIc(index)}
         />
         <AddPhoto />
-        <AddPhotoModal />
+        <AddPhotoModal galleryName={props.galleryName}/>
       </div>
     </div>
   );

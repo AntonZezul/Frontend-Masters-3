@@ -1,25 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useRef, useState } from "react";
 import "./AddPhotoModal.scss";
 
-export default function AddPhotoModal() {
+export default function AddPhotoModal(props) {
   const previewRef = useRef(null);
   const [fileArr, setFileArr] = useState([]);
-  const [image, setImage] = useState([]);
+
   const uploadButton = (selector) => {
     const input = document.querySelector(selector);
-
-    const preview = React.createElement("div", {
-      className: "preview",
-    });
-
     const open = React.createElement(
       "button",
       {
         id: "openButton",
         className: "upload_button",
         onClick: () => {
-          input.click();
+          if (input) input.click();
         },
       },
       "VYBERTE SÚBORY"
@@ -27,73 +21,42 @@ export default function AddPhotoModal() {
     return open;
   };
 
-  const uploadPreview = () => {
-    const preview = React.createElement("div", {
-      className: "preview-image",
-    });
-
-    return preview;
-  };
-
   const onChangeInput = (event) => {
     if (!event.target.files.length) {
-      return 
+      return;
     }
     const files = Array.from(event.target.files);
     files.forEach((file) => {
       if (!file.type.match("image")) {
-        return 
+        return;
       }
       setFileArr(files);
-      const reader = new FileReader()
-
-      reader.onload=(ev)=>{
-        setImage(ev.target.result)
-      }
-
-      reader.readAsDataURL(file);
     });
   };
-  // const onChangeInput = (event) => {
-  //   if (!event.target.files.length) {
-  //     return;
-  //   }
-  //   const files = Array.from(event.target.files);
-  //   files.map((file) => {
-  //     if (!file.type.match("image")) {
-  //       return;
-  //     }
-  //     return <div className></div>
-  //     // setImage(file.name)
 
-  //     // const reader = new FileReader();
-  //     // console.log(file);
-  //     // reader.onload = (ev) => {
-  //     //   //   // console.log(reader.result)
-  //     //   const img = React.createElement("img", {
-  //     //     src: ev.target.result,
-  //     //     alt: file.name,
-  //     //   });
+  const postImages = () => {
+    const formData = new FormData();
+    fileArr.forEach((el) => {
+      formData.append("path", el, el.name);
+      return fetch(`http://api.programator.sk/gallery/${props.galleryName}`, {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            setFileArr([])
+            return response.json();
+          } else {
+            throw new Error(
+              "Post in Gallery/{path} in NOT okej. Response status is " +
+                response.status
+            );
+          }
+        })
+        .catch((err) => console.log(err));
+    });
+  };
 
-  //       // console.log(ev)
-  //       // const previewImage = React.createElement(
-  //       //   "div",
-  //       //   {
-  //       //     className: "preview-image",
-  //       //     name: file.name,
-  //       //   },
-  //       //   img
-  //       // );
-
-  //       // previewRef.current.insertAdjacentHTML('afterbegin', previewImage.props.name)
-  //       // previewRef.current.append(ev.target.result)
-  //      // ReactDOM.render(previewImage, document.querySelector("#previewId"));
-  //   }
-  //   )}
-  //     // reader.readAsDataURL(file);
-  //   // });
-  // };
-  // console.log(typeof image)
   return (
     <div className="modal fade" id="add_photo_modal" tabIndex="-1">
       <div className="modal-dialog">
@@ -133,16 +96,34 @@ export default function AddPhotoModal() {
               />
               {uploadButton("#file")}
               <div id="previewId" className="preview" ref={previewRef}>
-                {fileArr.map((el, i) => {
-                  return <div key={i} className="preview-image">
-                    <div className="preview-remove">&times;</div>
-                    {el.name}
-                  </div>;
+                {fileArr.map((file, i) => {
+                  return (
+                    <div key={i} className="preview-image">
+                      <div
+                        className="preview-remove"
+                        data-name={file.name}
+                        onClick={() => {
+                          fileArr.splice(i, 1);
+                          const block = document
+                            .querySelector(`[data-name="${file.name}"]`)
+                            .closest(".preview-image");
+                          block.remove();
+                        }}
+                      >
+                        &times;
+                      </div>
+                      {file.name}
+                    </div>
+                  );
                 })}
               </div>
             </div>
             <div className="modal-footer">
-              <button type="button" className="btn btn-success">
+              <button
+                type="button"
+                onClick={() => postImages()}
+                className="btn btn-success"
+              >
                 <img
                   src={process.env.PUBLIC_URL + "/icons/add-icon.svg"}
                   alt={"add-icon-modal"}

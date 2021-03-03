@@ -10,6 +10,7 @@ function App() {
   const url_gallery = "http://api.programator.sk/gallery";
   const url_images = "http://api.programator.sk/images/1125x750/";
   const [galleryData, setGalleryData] = useState([]);
+  const [galleryName, setGalleryName] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [photoData, setPhotoData] = useState([]);
   const req = require("./storage/CategoryJSON");
@@ -76,6 +77,7 @@ function App() {
     return fetch(`http://api.programator.sk/gallery/${name}`)
       .then((response) => {
         if (response.ok) {
+          setGalleryName(name)
           return response.json();
         } else {
           throw new Error(
@@ -137,7 +139,8 @@ function App() {
               <Route path={"/album/:tag"}>
                 <PhotoContent
                   dataPhotos={photoData}
-                  galleryData={galleryData}
+                  // galleryData={galleryData}
+                  galleryName={galleryName}
                   bg={setBackground}
                 />
               </Route>
