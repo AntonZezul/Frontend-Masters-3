@@ -13,7 +13,7 @@ export default function AddPhotoModal(props) {
         id: "openButton",
         className: "upload_button",
         onClick: () => {
-          if (input) input.click();
+           input.click();
         },
       },
       "VYBERTE SÚBORY"
@@ -44,7 +44,7 @@ export default function AddPhotoModal(props) {
       })
         .then((response) => {
           if (response.ok) {
-            setFileArr([])
+            setFileArr([]);
             return response.json();
           } else {
             throw new Error(
@@ -103,11 +103,11 @@ export default function AddPhotoModal(props) {
                         className="preview-remove"
                         data-name={file.name}
                         onClick={() => {
-                          fileArr.splice(i, 1);
-                          const block = document
-                            .querySelector(`[data-name="${file.name}"]`)
-                            .closest(".preview-image");
-                          block.remove();
+                            fileArr.splice(i, 1);
+                            const block = document
+                              .querySelector(`[data-name="${file.name}"]`)
+                              .closest(".preview-image");
+                            block.remove();
                         }}
                       >
                         &times;

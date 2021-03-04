@@ -136,7 +136,7 @@ function App() {
                   />
                 )}
               />
-              <Route path={"/album/:tag"}>
+              <Route path={"/:tag"}>
                 <PhotoContent
                   dataPhotos={photoData}
                   // galleryData={galleryData}

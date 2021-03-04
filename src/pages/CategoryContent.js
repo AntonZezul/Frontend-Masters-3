@@ -15,7 +15,7 @@ export default function CategoryContent(props) {
       const dataPath = data.path;
       const dataName = data.name;
       const dataImage = data.image;
-      if (dataPath !== dataName) {
+      if (dataPath !== dataName && !dataPath.includes("%20") || dataPath.length > 15) {
         return null;
       } else {
         if (dataImage === undefined) {

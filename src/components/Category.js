@@ -11,7 +11,7 @@ const Category = (props) => {
     >
       <NavLink
         to={{
-          pathname: `/album/${props.tag}`,
+          pathname: `/${props.tag.toLowerCase()}`,
           state: { pass: `${props.theme}` },
         }}
         style={{ textDecoration: "none" }}

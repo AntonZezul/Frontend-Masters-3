@@ -5,6 +5,7 @@ export default function AddCategoryModal(props) {
   const [value, setValue] = useState("");
   const [validated, setValidated] = useState(false);
   const [focus, setFocus] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const headers = {
     "Content-Type": "application/json",
   };
@@ -25,8 +26,21 @@ export default function AddCategoryModal(props) {
     // } else errorText.style.opacity = 0;
   };
 
+  const errorMessageInput = (value) => {
+    if(!value){
+      setErrorMessage('Názov galérie nemôže byť prázdny.')
+    }
+    if(value.length > 15){
+      setErrorMessage('Názov galérie nesmie presiahnuť 15 znakov.')
+    }
+    if(value.includes("/")){
+      setErrorMessage('Názov galérie nemôže obsahovať znak "/".')
+    }
+  }
+
   const onClickButton = () => {
-    if (!value || value.includes("/") ) {
+    if (!value || value.includes("/") || value.length > 15) {
+      errorMessageInput(value)
       errorText.style.opacity = 1;
       errorBorder.style.border = '2px solid rgba(255,0,0, .7)'
       // setFocus(false)
@@ -105,7 +119,7 @@ export default function AddCategoryModal(props) {
                   />
                 </div>
                 <div className="invalid-feedback" style={{display: "block", opacity: 0}}>
-                Názov galérie nemôže obsahovať znak '/'. A nemôže byť prázdna.
+                {errorMessage}
                 </div>
               </div>
               <button
