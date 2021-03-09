@@ -1,21 +1,10 @@
 import { NavLink } from "react-router-dom";
 import "./Photo_Category.scss";
-// import CJSON from "../storage/CategoryJSON.json";
 
 const Category = (props) => {
   return (
-    <div
-      className="photo_box"
-      onMouseEnter={props.onMouseEnter}
-      onClick={props.onClick}
-    >
-      <NavLink
-        to={{
-          pathname: `/${props.tag.toLowerCase()}`,
-          state: { pass: `${props.theme}` },
-        }}
-        style={{ textDecoration: "none" }}
-      >
+    <div className="photo_box" onMouseEnter={props.onMouseEnter}>
+      <NavLink to={`/${props.tag}`} style={{ textDecoration: "none" }}>
         <div className="photo">
           <img
             className="img-photo_gallery"

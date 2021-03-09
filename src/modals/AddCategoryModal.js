@@ -1,54 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./AddCategoryModal.scss";
 
 export default function AddCategoryModal(props) {
   const [value, setValue] = useState("");
-  const [validated, setValidated] = useState(false);
-  const [focus, setFocus] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [focus, setFocus] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const headers = {
     "Content-Type": "application/json",
   };
   const errorText = document.querySelector(".invalid-feedback");
-  const errorBorder = document.querySelector("#categoryInput")
+  const errorBorder = document.querySelector("#categoryInput");
 
   const inputHandler = () => {
-    // if (value.length < 5 ) {
-      errorText.style.opacity = 0;
-      errorBorder.style.border = 'none'
-      // errorBorder.style.border = '3px solid red'
-      
-      console.log("true");
-      // if (errorDiv.style.display !== 'block'){
-      //   errorDiv.style.display = 'block'
-      // }
-      // else errorDiv.style.display = 'none'
-    // } else errorText.style.opacity = 0;
+    errorText.style.opacity = 0;
+    errorBorder.style.border = "none";
   };
 
   const errorMessageInput = (value) => {
-    if(!value){
-      setErrorMessage('Názov galérie nemôže byť prázdny.')
+    if (!value) {
+      setErrorMessage("Názov galérie nemôže byť prázdny.");
     }
-    if(value.length > 15){
-      setErrorMessage('Názov galérie nesmie presiahnuť 15 znakov.')
+    if (value.length > 15) {
+      setErrorMessage("Názov galérie nesmie presiahnuť 15 znakov.");
     }
-    if(value.includes("/")){
-      setErrorMessage('Názov galérie nemôže obsahovať znak "/".')
+    if (value.includes("/")) {
+      setErrorMessage('Názov galérie nemôže obsahovať znak "/".');
     }
-  }
+  };
 
   const onClickButton = () => {
     if (!value || value.includes("/") || value.length > 15) {
-      errorMessageInput(value)
+      errorMessageInput(value);
       errorText.style.opacity = 1;
-      errorBorder.style.border = '2px solid rgba(255,0,0, .7)'
-      // setFocus(false)
-
-      // console.log("Error");
-      // console.log(errorDiv)
+      errorBorder.style.border = "2px solid rgba(255,0,0, .7)";
     } else {
-      errorBorder.style.border = '2px solid rgba(40,167,69, .7)'
+      errorBorder.style.border = "2px solid rgba(40,167,69, .7)";
       return fetch("http://api.programator.sk/gallery", {
         method: "POST",
         body: JSON.stringify({
@@ -97,7 +83,6 @@ export default function AddCategoryModal(props) {
               <h5 className="modal-title">PRIDAŤ KATEGÓRIU</h5>
             </div>
             <div className="modal-footer">
-              {/* <form name="myForm"> */}
               <div className="col">
                 <div className="input-group">
                   <input
@@ -114,12 +99,15 @@ export default function AddCategoryModal(props) {
                       setValue(e.target.value);
                       inputHandler();
                     }}
-                    onFocus={()=>setFocus(true)}
+                    onFocus={() => setFocus(true)}
                     required
                   />
                 </div>
-                <div className="invalid-feedback" style={{display: "block", opacity: 0}}>
-                {errorMessage}
+                <div
+                  className="invalid-feedback"
+                  style={{ display: "block", opacity: 0 }}
+                >
+                  {errorMessage}
                 </div>
               </div>
               <button

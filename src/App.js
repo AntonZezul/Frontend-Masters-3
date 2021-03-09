@@ -3,32 +3,52 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Loading from "./components/Loading";
 import Background from "./components/Background";
+import { url_gallery, url_images } from "./utils/Url";
+import {
+  ERROR_GALLERY_MESSAGE,
+  ERROR_BACKGROUND_MESSAGE,
+} from "./utils/util_const";
 const CategoryContent = lazy(() => import("./pages/CategoryContent"));
 const PhotoContent = lazy(() => import("./pages/PhotoContent"));
 
 function App() {
-  const url_gallery = "http://api.programator.sk/gallery";
-  const url_images = "http://api.programator.sk/images/1125x750/";
-  const [galleryData, setGalleryData] = useState([]);
-  const [galleryName, setGalleryName] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
-  const [photoData, setPhotoData] = useState([]);
-  const req = require("./storage/CategoryJSON");
-
-  // console.log(backgroundArray);
   const [background, setBackground] = useState("");
 
   const backgroundArray = [];
+
   useEffect(() => {
-    fetch(url_gallery)
+    let cleanUp = false;
+    console.log(url_gallery(""));
+    fetch(url_gallery(""))
       .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error(
-            "Response in Background in NOT okej. Response status is " +
-              response.status
-          );
+          throw new Error(ERROR_GALLERY_MESSAGE + response.status);
+        }
+      })
+      .then((json) => json.galleries)
+      .then((galleries) => {
+        if (!cleanUp) {
+          setCategoryData(galleries);
+        }
+      })
+      .catch((err) => {
+        console.info(err);
+      });
+    return () => {
+      cleanUp = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    fetch(url_gallery(""))
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(ERROR_BACKGROUND_MESSAGE + response.status);
         }
       })
       .then((json) => json.galleries)
@@ -38,85 +58,14 @@ function App() {
             return null;
           } else {
             return backgroundArray.push(el.image.fullpath);
-            // console.log(backgroundArray)
           }
         });
-        setBackground(
-          `http://api.programator.sk/images/1125x750/${backgroundArray[0]}`
-        );
-        // console.log(backgroundArray)
+        setBackground(url_images("1125x750", backgroundArray[0]));
       })
       .catch((err) => {
         console.info(err);
       });
   }, []);
-
-  useEffect(() => {
-    fetch(url_gallery)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error(
-            "Response in Gallery in NOT okej. Response status is " +
-              response.status
-          );
-        }
-      })
-      .then((json) => json.galleries)
-      .then((galleries) => {
-        setGalleryData(galleries);
-        setCategoryData(galleries);
-      })
-      .catch((err) => {
-        console.info(err);
-      });
-  }, []);
-
-  const onClick = (name) => {
-    return fetch(`http://api.programator.sk/gallery/${name}`)
-      .then((response) => {
-        if (response.ok) {
-          setGalleryName(name)
-          return response.json();
-        } else {
-          throw new Error(
-            "Response in Gallery/{path} in NOT okej. Response status is " +
-              response.status
-          );
-        }
-      })
-      .then((json) => json.images)
-      .then((image) => {
-        return image;
-      })
-      .then((data) => {
-        if (data.length === 0) {
-          setPhotoData([]);
-        } else {
-          data.map((element, i) => {
-            return fetch(
-              `http://api.programator.sk/images/1125x750/${element.fullpath}`
-            )
-              .then((img) => {
-                if (img.ok) {
-                  if (data.length - i === 1) {
-                    setPhotoData(data);
-                  }
-                } else {
-                  data.splice(i, 1);
-                  throw new Error(
-                    "Response in Images/{WxH}/fullpath in NOT okej. Response status is " +
-                      img.status
-                  );
-                }
-              })
-              .catch((err) => console.info(err));
-          });
-        }
-      })
-      .catch((err) => console.info(err));
-  };
 
   return (
     <BrowserRouter>
@@ -132,18 +81,13 @@ function App() {
                   <CategoryContent
                     dataCategory={categoryData}
                     onMouseEnter={setBackground}
-                    onClick={onClick}
                   />
                 )}
               />
-              <Route path={"/:tag"}>
-                <PhotoContent
-                  dataPhotos={photoData}
-                  // galleryData={galleryData}
-                  galleryName={galleryName}
-                  bg={setBackground}
-                />
-              </Route>
+              <Route
+                path={"/:tag"}
+                component={() => <PhotoContent bg={setBackground} />}
+              ></Route>
             </Switch>
           </Suspense>
         </div>

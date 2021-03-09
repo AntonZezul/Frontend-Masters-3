@@ -1,9 +1,6 @@
-import { useParams } from "react-router-dom";
 import "./Photo_Category.scss";
 
 const Photo = (props) => {
-  const { tag } = useParams()
-  console.log(tag)
   return (
     <div
       onClick={props.wrapperFunction}

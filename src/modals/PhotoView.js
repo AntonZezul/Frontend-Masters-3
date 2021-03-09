@@ -1,6 +1,6 @@
 import "./PhotoView.scss";
 
-const PhotoView = props => {
+const PhotoView = (props) => {
   return (
     <div
       className="modal fade"
@@ -31,7 +31,7 @@ const PhotoView = props => {
             <img
               className="img-fluid"
               style={{ width: 100 + "%" }}
-              src={props.photo}
+              src={props.image}
               alt={""}
             />
             <div className="modal-nav">

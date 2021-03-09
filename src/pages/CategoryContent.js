@@ -2,20 +2,22 @@ import Category from "../components/Category";
 import HeaderContent from "../components/HeaderContent";
 import { AddCategory } from "../components/AddCategory";
 import AddCategoryModal from "../modals/AddCategoryModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { url_images } from "../utils/Url";
+import { NO_PHOTO_IMAGE } from "../utils/util_const";
 
 export default function CategoryContent(props) {
-  const URL_IMAGE = "http://api.programator.sk/images/1125x750/";
-  const [photoData, setPhotoData] = useState([]);
-  const noPhotoImage =
-    "https://databox-360.com/wp-content/themes/consultix/images/no-image-found-360x250.png";
+  const [photoDataLen, setPhotoDataLen] = useState([]);
 
   const displayCategories = () => {
     return props.dataCategory.map((data, i) => {
       const dataPath = data.path;
       const dataName = data.name;
       const dataImage = data.image;
-      if (dataPath !== dataName && !dataPath.includes("%20") || dataPath.length > 15) {
+      if (
+        (dataPath !== dataName && !dataPath.includes("%20")) ||
+        dataPath.length > 15
+      ) {
         return null;
       } else {
         if (dataImage === undefined) {
@@ -25,10 +27,9 @@ export default function CategoryContent(props) {
               tag={dataName}
               theme={dataName}
               alt={dataName}
-              photo={noPhotoImage}
+              photo={NO_PHOTO_IMAGE}
               num_photo={"0 fotiek"}
-              onClick={() => props.onClick(dataPath)}
-              onMouseEnter={() => props.onMouseEnter(noPhotoImage)}
+              onMouseEnter={() => props.onMouseEnter(NO_PHOTO_IMAGE)}
             />
           );
         } else {
@@ -36,19 +37,12 @@ export default function CategoryContent(props) {
             <Category
               key={i}
               tag={dataName}
-              photo={URL_IMAGE + dataImage.fullpath}
+              photo={url_images("1125x750", dataImage.fullpath)}
               theme={dataName}
               alt={dataPath}
-              num_photo={
-                // props.dataPhotoLength.length + " fotiek"
-                `http://api.programator.sk/gallery/${dataPath}`.length +
-                " fotiek"
-              }
-              onClick={() => props.onClick(dataPath)}
+              num_photo={photoDataLen + " fotiek"}
               onMouseEnter={() =>
-                props.onMouseEnter(
-                  `http://api.programator.sk/images/1125x750/${dataImage.fullpath}`
-                )
+                props.onMouseEnter(url_images("1125x750", dataImage.fullpath))
               }
             />
           );
