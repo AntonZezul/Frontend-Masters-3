@@ -1,12 +1,12 @@
 import HeaderContent from "../components/HeaderContent";
-import Photo from "../components/Photo";
 import { AddPhoto } from "../components/AddPhoto";
 import { useParams, useRouteMatch, useHistory } from "react-router-dom";
 import PhotoView from "../modals/PhotoView";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import AddPhotoModal from "../modals/AddPhotoModal";
 import Loading from "../components/Loading";
 import { url_gallery, url_images } from "../utils/Url";
+import Photo from "../components/Photo";
 import {
   ERROR_GALLERY_PATH_MESSAGE,
   ERROR_IMAGES_MESSAGE,
@@ -16,7 +16,7 @@ export default function PhotoContent(props) {
   const { tag } = useParams();
   const [image, setImage] = useState("");
   const [index, setIndex] = useState();
-  const [photoData, setPhotoData] = useState(null);
+  const [photoData, setPhotoData] = useState([]);
   const background = [];
   const history = useHistory();
 
@@ -52,16 +52,18 @@ export default function PhotoContent(props) {
   };
 
   const displayPhotos = () => {
-    return photoData.map((data, i) => {
-      background.push(data.fullpath);
-      return (
-        <Photo
-          key={i}
-          photo={url_images("1125x750", data.fullpath)}
-          wrapperFunction={() => wrapperFunction(i)}
-        />
-      );
-    });
+    return photoData
+      .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
+      .map((data, i) => {
+        background.push(data.fullpath);
+        return (
+          <Photo
+            key={i}
+            photo={url_images("1125x750", data.fullpath)}
+            wrapperFunction={() => wrapperFunction(i)}
+          />
+        );
+      });
   };
   // const firstLetterUppercase = (name) =>
   //   name.charAt(0).toUpperCase() + name.slice(1);
@@ -90,7 +92,7 @@ export default function PhotoContent(props) {
             fetch(url_images("1125x750", element.fullpath))
               .then((img) => {
                 if (img.ok) {
-                  if (data.length - i === 1) {
+                  if (data.length - i === 1 && !cleanUp) {
                     setPhotoData(data);
                   }
                 } else {
@@ -106,13 +108,14 @@ export default function PhotoContent(props) {
     return () => (cleanUp = true);
   }, []);
 
-  if (photoData === null) return <Loading />;
+  // if (photoData === null) return <Loading />;
 
   return (
     <div className="content">
       <HeaderContent headerName={tag} icon={true} />
       <div className="img-area">
         {displayPhotos()}
+
         <PhotoView
           image={image}
           prevIcon={() => prevIc(index)}

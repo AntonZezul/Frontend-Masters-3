@@ -19,7 +19,6 @@ function App() {
 
   useEffect(() => {
     let cleanUp = false;
-    console.log(url_gallery(""));
     fetch(url_gallery(""))
       .then((response) => {
         if (response.ok) {

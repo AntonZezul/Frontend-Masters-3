@@ -9,7 +9,7 @@ const Photo = (props) => {
       data-toggle="modal"
       data-target="#photo-modal"
     >
-      <img className="img_gallery" src={props.photo} alt={"photos"} />
+      <img className="img_gallery" src={props.photo} alt={"photos"}/>
     </div>
   );
 };
