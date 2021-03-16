@@ -1,5 +1,11 @@
 import "./App.scss";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Switch,
+  useHistory,
+  useRouteMatch,
+} from "react-router-dom";
 import { useEffect, useState, lazy, Suspense } from "react";
 import Loading from "./components/Loading";
 import Background from "./components/Background";
@@ -14,6 +20,8 @@ const PhotoContent = lazy(() => import("./pages/PhotoContent"));
 function App() {
   const [categoryData, setCategoryData] = useState([]);
   const [background, setBackground] = useState("");
+  const [categoryImages, setCategoryImages] = useState([]);
+  const [childData, setChildData] = useState([]);
 
   const backgroundArray = [];
 
@@ -31,6 +39,18 @@ function App() {
       .then((galleries) => {
         if (!cleanUp) {
           setCategoryData(galleries);
+          // galleries.forEach((el) => {
+          //   if (el !== undefined)
+          //     fetch(url_gallery(`/${el.name}`))
+          //       .then((response) => {
+          //         if (response.ok) {
+          //           return response.json()
+          //         }
+          //         throw new Error('Err' + response.status)
+          //       })
+          //       .then((json) => setCategoryImages(json.images[0]))
+          //       .catch(err=>{console.log(err)})
+          // });
         }
       })
       .catch((err) => {
@@ -52,7 +72,7 @@ function App() {
       })
       .then((json) => json.galleries)
       .then((galleries) => {
-        galleries.map((el) => {
+        galleries.forEach((el) => {
           if (el.image === undefined) {
             return null;
           } else {
@@ -64,7 +84,15 @@ function App() {
       .catch((err) => {
         console.info(err);
       });
-  }, []);
+  }, []); //todo
+
+  // useEffect(()=>{
+  //   fetch(url_gallery("/Car")).then(response => response.json().then(json => setCategoryImages(json.images.map(el=>el.fullpath))))
+  // },[])
+
+  const handleCallback = (childData) => {
+    if (childData) setBackground(childData);
+  };
 
   return (
     <BrowserRouter>
@@ -79,13 +107,19 @@ function App() {
                 component={() => (
                   <CategoryContent
                     dataCategory={categoryData}
+                    categoryImages={categoryImages}
                     onMouseEnter={setBackground}
                   />
                 )}
               />
               <Route
                 path={"/:tag"}
-                component={() => <PhotoContent bg={setBackground} />}
+                component={() => (
+                  <PhotoContent
+                    bg={background}
+                    parentCallback={handleCallback}
+                  />
+                )}
               ></Route>
             </Switch>
           </Suspense>

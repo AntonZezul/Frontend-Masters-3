@@ -2,15 +2,14 @@ import Category from "../components/Category";
 import HeaderContent from "../components/HeaderContent";
 import { AddCategory } from "../components/AddCategory";
 import AddCategoryModal from "../modals/AddCategoryModal";
-import { useState } from "react";
-import { url_images } from "../utils/Url";
+import { useEffect, useState } from "react";
+import { url_gallery, url_images } from "../utils/Url";
 import { NO_PHOTO_IMAGE } from "../utils/util_const";
 
 export default function CategoryContent(props) {
   const [photoDataLen, setPhotoDataLen] = useState([]);
 
   const displayCategories = () => {
-    // console.log(props.dataCategory)
     return props.dataCategory
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((data, i) => {
@@ -36,6 +35,18 @@ export default function CategoryContent(props) {
               />
             );
           } else {
+            // props.dataCategory.map((el) => {
+            //   if (el.image !== undefined) {
+            //     if (el.image.fullpath === props.categoryImages.fullpath) {
+            //       console.log(el.image.fullpath);
+            //     } else {
+            //       console.log("no");
+            //     }
+            //   }
+            // });
+            // if(props.categoryImages ){
+            //   console.log(props.categoryImages.fullpath)
+            // }
             return (
               <Category
                 key={i}

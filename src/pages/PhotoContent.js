@@ -16,7 +16,8 @@ export default function PhotoContent(props) {
   const { tag } = useParams();
   const [image, setImage] = useState("");
   const [index, setIndex] = useState();
-  const [photoData, setPhotoData] = useState([]);
+  const [photoData, setPhotoData] = useState(null);
+  const [back, setBack] = useState("")
   const background = [];
   const history = useHistory();
 
@@ -25,6 +26,10 @@ export default function PhotoContent(props) {
     photoData !== null
       ? photoData.map((photo) => url_images("1125x750", photo.fullpath))
       : null;
+
+  useEffect(() => {
+    props.parentCallback(back);
+  }, []);
 
   const wrapperFunction = (id) => {
     setIndex(arrID[id]);
@@ -52,8 +57,9 @@ export default function PhotoContent(props) {
   };
 
   const displayPhotos = () => {
+    // console.log(photoData);
     return photoData
-      .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
+      // .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
       .map((data, i) => {
         background.push(data.fullpath);
         return (
@@ -70,7 +76,7 @@ export default function PhotoContent(props) {
 
   useEffect(() => {
     let cleanUp = false;
-    fetch(url_gallery("/" + tag))
+    fetch(url_gallery(history.location.pathname))
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -94,6 +100,7 @@ export default function PhotoContent(props) {
                 if (img.ok) {
                   if (data.length - i === 1 && !cleanUp) {
                     setPhotoData(data);
+                    setBack(data[0].fullpath)
                   }
                 } else {
                   data.splice(i, 1);
@@ -105,10 +112,11 @@ export default function PhotoContent(props) {
         }
       })
       .catch((err) => console.info(err));
+
     return () => (cleanUp = true);
   }, []);
 
-  // if (photoData === null) return <Loading />;
+  if (photoData === null) return <Loading />;
 
   return (
     <div className="content">
