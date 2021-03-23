@@ -18,7 +18,6 @@ export default function PhotoPage() {
   const [image, setImage] = useState('');
   const [index, setIndex] = useState();
   const [photoData, setPhotoData] = useState(null);
-  // const [back, setBack] = useState("")
   const background = [];
   const history = useHistory();
 
@@ -27,10 +26,6 @@ export default function PhotoPage() {
     photoData !== null
       ? photoData.map((photo) => url_images('1125x750', photo.fullpath))
       : null;
-
-  // useEffect(() => {
-  //   props.parentCallback(back);
-  // }, []);
 
   const wrapperFunction = (id) => {
     setIndex(arrID[id]);
@@ -58,7 +53,6 @@ export default function PhotoPage() {
   };
 
   const displayPhotos = () => {
-    // console.log(photoData);
     return (
       photoData
         // .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
@@ -74,8 +68,6 @@ export default function PhotoPage() {
         })
     );
   };
-  // const firstLetterUppercase = (name) =>
-  //   name.charAt(0).toUpperCase() + name.slice(1);
 
   useEffect(() => {
     let cleanUp = false;
@@ -93,7 +85,6 @@ export default function PhotoPage() {
         return image;
       })
       .then((data) => {
-        // console.log(data);
         if (data.length === 0 && !cleanUp) {
           setPhotoData([]);
         } else {
@@ -103,7 +94,6 @@ export default function PhotoPage() {
                 if (img.ok) {
                   if (data.length - i === 1 && !cleanUp) {
                     setPhotoData(data);
-                    // setBack(data[0].fullpath)
                   }
                 } else {
                   data.splice(i, 1);
@@ -126,7 +116,6 @@ export default function PhotoPage() {
       <HeaderContent headerName={tag} icon={true} />
       <div className='img-area'>
         {displayPhotos()}
-
         <PhotoView
           image={image}
           prevIcon={() => prevIc(index)}
