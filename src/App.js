@@ -1,33 +1,25 @@
-import "./App.scss";
-import {
-  BrowserRouter,
-  Route,
-  Switch,
-  useHistory,
-  useRouteMatch,
-} from "react-router-dom";
-import { useEffect, useState, lazy, Suspense } from "react";
-import Loading from "./components/Loading";
-import Background from "./components/Background";
-import { url_gallery, url_images } from "./utils/Url";
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { useEffect, useState, lazy, Suspense } from 'react';
+import Loading from './components/Loading';
+import Background from './components/Background';
+import { url_gallery, url_images } from './utils/url-util';
 import {
   ERROR_GALLERY_MESSAGE,
   ERROR_BACKGROUND_MESSAGE,
-} from "./utils/util_const";
-const CategoryContent = lazy(() => import("./pages/CategoryContent"));
-const PhotoContent = lazy(() => import("./pages/PhotoContent"));
+} from './constants/util-const';
+import './App.scss';
+const CategoryPage = lazy(() => import('./pages/categoryPage/CategoryPage'));
+const PhotoPage = lazy(() => import('./pages/photoPage/PhotoPage'));
 
 function App() {
   const [categoryData, setCategoryData] = useState([]);
-  const [background, setBackground] = useState("");
-  const [categoryImages, setCategoryImages] = useState([]);
-  const [childData, setChildData] = useState([]);
-
-  const backgroundArray = [];
+  const [background, setBackground] = useState('');
+  // const [categoryImages, setCategoryImages] = useState([]);
 
   useEffect(() => {
     let cleanUp = false;
-    fetch(url_gallery(""))
+    fetch(url_gallery(''))
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -39,18 +31,6 @@ function App() {
       .then((galleries) => {
         if (!cleanUp) {
           setCategoryData(galleries);
-          // galleries.forEach((el) => {
-          //   if (el !== undefined)
-          //     fetch(url_gallery(`/${el.name}`))
-          //       .then((response) => {
-          //         if (response.ok) {
-          //           return response.json()
-          //         }
-          //         throw new Error('Err' + response.status)
-          //       })
-          //       .then((json) => setCategoryImages(json.images[0]))
-          //       .catch(err=>{console.log(err)})
-          // });
         }
       })
       .catch((err) => {
@@ -62,7 +42,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    fetch(url_gallery(""))
+    const backgroundArray = [];
+    fetch(url_gallery(''))
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -79,7 +60,7 @@ function App() {
             return backgroundArray.push(el.image.fullpath);
           }
         });
-        setBackground(url_images("1125x750", backgroundArray[0]));
+        setBackground(url_images('1125x750', backgroundArray[0]));
       })
       .catch((err) => {
         console.info(err);
@@ -90,37 +71,27 @@ function App() {
   //   fetch(url_gallery("/Car")).then(response => response.json().then(json => setCategoryImages(json.images.map(el=>el.fullpath))))
   // },[])
 
-  const handleCallback = (childData) => {
-    if (childData) setBackground(childData);
-  };
-
   return (
     <BrowserRouter>
-      <div className="App">
+      <div className='App'>
         <Background background={background}></Background>
-        <div id="bottom">
+        <div className='bottom'>
           <Suspense fallback={<Loading />}>
             <Switch>
               <Route
-                path={"/"}
+                path={'/'}
                 exact
                 component={() => (
-                  <CategoryContent
+                  <CategoryPage
                     dataCategory={categoryData}
-                    categoryImages={categoryImages}
+                    // categoryImages={categoryImages}
                     onMouseEnter={setBackground}
                   />
                 )}
               />
               <Route
-                path={"/:tag"}
-                component={() => (
-                  <PhotoContent
-                    bg={background}
-                    parentCallback={handleCallback}
-                  />
-                )}
-              ></Route>
+                path={'/:tag'}
+                component={() => <PhotoPage bg={background} />}></Route>
             </Switch>
           </Suspense>
         </div>

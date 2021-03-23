@@ -1,0 +1,97 @@
+#add_category_modal {
+  .modal-dialog {
+    display: flex;
+    align-items: center;
+    margin: 0 auto;
+    height: 100vh;
+    @media only screen and (min-width: 730px) {
+      max-width: 43.75rem;
+    }
+    @media only screen and (max-width: 576px) {
+      margin: auto 2.5rem;
+    }
+
+    .modal-content {
+      background-color: transparent;
+      border: none;
+      min-width: 25rem;
+
+      .close {
+        color: #ffffff;
+        text-shadow: none;
+        opacity: 0.8;
+        margin: 1rem 0 1rem auto;
+
+        &:hover {
+          color: #ffffff;
+          opacity: 1;
+        }
+        span {
+          font-size: 1rem;
+          letter-spacing: 0.2rem;
+          text-align: center;
+        }
+      }
+    }
+    .modal-content-without-close {
+      background-color: white;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      border-radius: 0.3rem;
+
+      .modal-header {
+        border-bottom: none;
+        margin: 1rem;
+
+        h5 {
+          color: #4f4f4f;
+          font-weight: bold;
+          letter-spacing: 1px;
+        }
+        @media only screen and (max-width: 567px) {
+          justify-content: space-around;
+        }
+      }
+      .modal-footer {
+        display: flex;
+        flex-wrap: inherit;
+        border-top: none;
+        justify-content: space-between;
+        margin: 1.75rem;
+        padding: 0;
+        border-bottom: 2px solid #dee2e6;
+
+        form {
+          display: flex;
+          width: 100%;
+
+          input {
+            margin-right: 2rem;
+          }
+
+          button {
+            padding: 0.85rem 2.5rem;
+            display: flex;
+            align-items: center;
+            letter-spacing: 1px;
+            font-size: medium;
+            margin-bottom: 0.8rem;
+
+            img {
+              margin: 0.5rem;
+            }
+          }
+        }
+        .invalid-feedback {
+          display: block;
+        }
+
+        p {
+          margin-bottom: 0.8rem;
+        }
+        @media only screen and (max-width: 567px) {
+          justify-content: space-around;
+        }
+      }
+    }
+  }
+}

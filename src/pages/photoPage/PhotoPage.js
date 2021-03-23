@@ -1,35 +1,36 @@
-import HeaderContent from "../components/HeaderContent";
-import { AddPhoto } from "../components/AddPhoto";
-import { useParams, useRouteMatch, useHistory } from "react-router-dom";
-import PhotoView from "../modals/PhotoView";
-import { lazy, Suspense, useEffect, useState } from "react";
-import AddPhotoModal from "../modals/AddPhotoModal";
-import Loading from "../components/Loading";
-import { url_gallery, url_images } from "../utils/Url";
-import Photo from "../components/Photo";
+import React from 'react';
+import HeaderContent from '../../components/HeaderContent';
+import { AddPhoto } from '../../components/AddPhoto';
+import { useParams, useHistory } from 'react-router-dom';
+import PhotoView from '../../modals/photoView/PhotoView';
+import { useEffect, useState } from 'react';
+import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
+import Loading from '../../components/Loading';
+import { url_gallery, url_images } from '../../utils/url-util';
+import Photo from '../../components/Photo';
 import {
   ERROR_GALLERY_PATH_MESSAGE,
   ERROR_IMAGES_MESSAGE,
-} from "../utils/util_const";
+} from '../../constants/util-const';
 
-export default function PhotoContent(props) {
+export default function PhotoPage() {
   const { tag } = useParams();
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState('');
   const [index, setIndex] = useState();
   const [photoData, setPhotoData] = useState(null);
-  const [back, setBack] = useState("")
+  // const [back, setBack] = useState("")
   const background = [];
   const history = useHistory();
 
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
   const arrPhoto =
     photoData !== null
-      ? photoData.map((photo) => url_images("1125x750", photo.fullpath))
+      ? photoData.map((photo) => url_images('1125x750', photo.fullpath))
       : null;
 
-  useEffect(() => {
-    props.parentCallback(back);
-  }, []);
+  // useEffect(() => {
+  //   props.parentCallback(back);
+  // }, []);
 
   const wrapperFunction = (id) => {
     setIndex(arrID[id]);
@@ -58,18 +59,20 @@ export default function PhotoContent(props) {
 
   const displayPhotos = () => {
     // console.log(photoData);
-    return photoData
-      // .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
-      .map((data, i) => {
-        background.push(data.fullpath);
-        return (
-          <Photo
-            key={i}
-            photo={url_images("1125x750", data.fullpath)}
-            wrapperFunction={() => wrapperFunction(i)}
-          />
-        );
-      });
+    return (
+      photoData
+        // .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
+        .map((data, i) => {
+          background.push(data.fullpath);
+          return (
+            <Photo
+              key={i}
+              photo={url_images('1125x750', data.fullpath)}
+              wrapperFunction={() => wrapperFunction(i)}
+            />
+          );
+        })
+    );
   };
   // const firstLetterUppercase = (name) =>
   //   name.charAt(0).toUpperCase() + name.slice(1);
@@ -81,7 +84,7 @@ export default function PhotoContent(props) {
         if (response.ok) {
           return response.json();
         } else {
-          history.push("/");
+          history.push('/');
           throw new Error(ERROR_GALLERY_PATH_MESSAGE + response.status);
         }
       })
@@ -95,12 +98,12 @@ export default function PhotoContent(props) {
           setPhotoData([]);
         } else {
           data.forEach((element, i) => {
-            fetch(url_images("1125x750", element.fullpath))
+            fetch(url_images('1125x750', element.fullpath))
               .then((img) => {
                 if (img.ok) {
                   if (data.length - i === 1 && !cleanUp) {
                     setPhotoData(data);
-                    setBack(data[0].fullpath)
+                    // setBack(data[0].fullpath)
                   }
                 } else {
                   data.splice(i, 1);
@@ -114,14 +117,14 @@ export default function PhotoContent(props) {
       .catch((err) => console.info(err));
 
     return () => (cleanUp = true);
-  }, []);
+  }, [history]);
 
   if (photoData === null) return <Loading />;
 
   return (
-    <div className="content">
+    <div className='content'>
       <HeaderContent headerName={tag} icon={true} />
-      <div className="img-area">
+      <div className='img-area'>
         {displayPhotos()}
 
         <PhotoView

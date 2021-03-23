@@ -1,37 +1,26 @@
-body{
-    margin: -10px 0 0 0;
-    // font-family: 'Comfortaa', sans-serif;
-    font-weight: lighter;
-    width: 100%;
-}
-// ./img/landscape-meadow-field-mountains-66874.jpeg
-#headImage{
-    width: 100%;
-    padding-bottom: 400px;
-    background-position: center;
-    -webkit-background-size: cover;
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: blur(12px) brightness(80%);
-    -webkit-filter: blur(12px) brightness(80%);
+.headImage {
+  height: 25rem;
+  background-position: center;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(12px) brightness(80%);
+  -webkit-filter: blur(12px) brightness(80%);
 }
 
-#bottom{
-    position: absolute;
-    width: 100%;
-    height: 650px;
-    background-color: white;
-}
+.bottom {
+  width: 100vw;
+  position: absolute;
+  background-color: white;
 
-.content{
-    margin: -300px auto 20px;
-    width: 80%;
-    background-color: transparent;
-}
+  .content {
+    margin: -17rem 8rem 3rem 8rem;
 
-.img-area{
-    position: relative;
-	display: flex;
-	flex-wrap: wrap;
-	width: calc(100% + 32px);
+    .img-area {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      width: calc(100% + 2rem);
+    }
+  }
 }
