@@ -1,7 +1,10 @@
-import React from 'react';
-import { useCategoryPage } from '../../pages/category-page-context/CategoryPageContext';
+import React, { useContext } from 'react';
+import { CategoryPageContext } from '../../pages/category-page-context/CategoryPageContext';
 
 export default function Background() {
-  const back = useCategoryPage();
-  return <img src={back.background} className='background' alt='' />;
+  const backContext = useContext(CategoryPageContext);
+
+  return (
+    <img src={backContext.getBackground()} className='background' alt='' />
+  );
 }

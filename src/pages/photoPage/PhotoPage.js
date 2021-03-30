@@ -5,7 +5,7 @@ import PhotoView from '../../modals/photoView/PhotoView';
 import { useEffect, useState } from 'react';
 import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
 // import Loading from '../../components/Loading';
-import { url_gallery, url_images } from '../../utils/url-util';
+import { urlGallery, urlImages } from '../../utils/url-util';
 import Photo from '../../components/photo/Photo';
 import {
   ERROR_GALLERY_PATH_MESSAGE,
@@ -24,7 +24,7 @@ export default function PhotoPage() {
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
   const arrPhoto =
     photoData !== null
-      ? photoData.map((photo) => url_images('1125x750', photo.fullpath))
+      ? photoData.map((photo) => urlImages('1200x720', photo.fullpath))
       : null;
 
   const wrapperFunction = (id) => {
@@ -61,51 +61,51 @@ export default function PhotoPage() {
           return (
             <Photo
               key={i}
-              photo={url_images('1125x750', data.fullpath)}
+              photo={urlImages('1200x720', data.fullpath)}
               wrapperFunction={() => wrapperFunction(i)}
             />
           );
         })
     );
   };
+  const fetchImages = async (cleanUp) => {
+    try {
+      const response1 = await fetch(urlGallery(history.location.pathname));
+      if (response1.ok) {
+        const { images } = await response1.json();
+        if (images.length === 0 && !cleanUp) {
+          setPhotoData([]);
+        } else {
+          images.forEach(async (element, i) => {
+            try {
+              const response2 = await fetch(
+                urlImages('1200x720', element.fullpath)
+              );
+              if (response2.ok) {
+                if (images.length - i === 1 && !cleanUp) {
+                  setPhotoData(images);
+                }
+              } else {
+                data.splice(i, 1);
+                throw new Error(ERROR_IMAGES_MESSAGE + img.status);
+              }
+            } catch (e) {
+              console.info(e);
+            }
+          });
+        }
+      } else {
+        history.push('/');
+        throw new Error(ERROR_GALLERY_PATH_MESSAGE + response.status);
+      }
+    } catch (e) {
+      console.info(e);
+    }
+  };
 
   useEffect(() => {
     let cleanUp = false;
-    fetch(url_gallery(history.location.pathname))
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          history.push('/');
-          throw new Error(ERROR_GALLERY_PATH_MESSAGE + response.status);
-        }
-      })
-      .then((json) => json.images)
-      .then((image) => {
-        return image;
-      })
-      .then((data) => {
-        if (data.length === 0 && !cleanUp) {
-          setPhotoData([]);
-        } else {
-          data.forEach((element, i) => {
-            fetch(url_images('1125x750', element.fullpath))
-              .then((img) => {
-                if (img.ok) {
-                  if (data.length - i === 1 && !cleanUp) {
-                    setPhotoData(data);
-                  }
-                } else {
-                  data.splice(i, 1);
-                  throw new Error(ERROR_IMAGES_MESSAGE + img.status);
-                }
-              })
-              .catch((err) => console.info(err));
-          });
-        }
-      })
-      .catch((err) => console.info(err));
-
+    fetchImages(cleanUp);
     return () => (cleanUp = true);
   }, [history]);
 

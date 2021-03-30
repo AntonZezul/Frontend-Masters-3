@@ -1,21 +1,72 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Category from '../../components/category/Category';
 import { AddCategory } from '../../components/addButtons/addCategoryButton/AddCategory';
 import AddCategoryModal from '../../modals/addCategoryModal/AddCategoryModal';
-import { url_images } from '../../utils/url-util';
-import { NO_PHOTO_IMAGE } from '../../constants/util-const';
-import { useCategoryPage } from '../category-page-context/CategoryPageContext';
+import { urlGallery, urlImages } from '../../utils/url-util';
+import {
+  ERROR_GALLERY_MESSAGE,
+  NO_PHOTO_IMAGE,
+} from '../../constants/util-const';
+import { CategoryPageContext } from '../category-page-context/CategoryPageContext';
 import './CategoryPage.scss';
-import { useHistory } from 'react-router';
+// import { fetchBackground } from '../../api/fetch-data';
 
 export default function CategoryPage() {
-  const categoryPage = useCategoryPage();
+  const categoryContext = useContext(CategoryPageContext);
+  const [categoryData, setCategoryData] = useState([]);
 
-  const history = useHistory();
-  console.log(history);
+  const fetchBackground = async () => {
+    try {
+      const backgroundArray = [];
+      const response = await fetch(urlGallery(''));
+      if (response.ok) {
+        const { galleries } = await response.json();
+        galleries.forEach((el) => {
+          if (el.image === undefined) {
+            return null;
+          } else {
+            return backgroundArray.push(el.image.fullpath);
+          }
+        });
+        categoryContext.setBackground(
+          urlImages('1200x720', backgroundArray[0])
+        );
+      } else {
+        throw new Error(ERROR_BACKGROUND_MESSAGE + response.status);
+      }
+    } catch (e) {
+      console.info(e);
+    }
+  };
+
+  const fetchGalleries = async (cleanUp) => {
+    try {
+      const response = await fetch(urlGallery(''));
+      if (response.ok) {
+        const { galleries } = await response.json();
+        if (!cleanUp) {
+          setCategoryData(galleries);
+        }
+      } else throw new Error(ERROR_GALLERY_MESSAGE + response.status);
+    } catch (e) {
+      console.info(e);
+    }
+  };
+
+  useEffect(() => {
+    let cleanUp = false;
+
+    fetchBackground().then()
+    fetchGalleries(cleanUp).then();
+
+    return () => {
+      cleanUp = true;
+    };
+  }, []);
+
   return (
     <div className='categories'>
-      {categoryPage.dataCategory
+      {categoryData
         // .sort((a, b) => a.name.localeCompare(b.name))
         .map((data, i) => {
           if (
@@ -32,17 +83,17 @@ export default function CategoryPage() {
                 alt={data.name}
                 photo={
                   data.image
-                    ? url_images('1200x720', data.image.fullpath)
+                    ? urlImages('1200x720', data.image.fullpath)
                     : NO_PHOTO_IMAGE
                 }
                 num_photo={data.image ? ' fotiek' : '0 fotiek'}
                 onMouseEnter={
                   data.image
                     ? () =>
-                        categoryPage.setBackground(
-                          url_images('1200x720', data.image.fullpath)
+                        categoryContext.setBackground(
+                          urlImages('1200x720', data.image.fullpath)
                         )
-                    : () => categoryPage.setBackground(NO_PHOTO_IMAGE)
+                    : () => categoryContext.setBackground(NO_PHOTO_IMAGE)
                 }
               />
             );
