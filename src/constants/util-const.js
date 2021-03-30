@@ -1,5 +1,5 @@
 export const NO_PHOTO_IMAGE =
-  'https://www.solidbackgrounds.com/images/1280x720/1280x720-light-gray-solid-color-background.jpg';
+  'https://i.guim.co.uk/img/media/d0105731685e5b2b3daecf2fa00c9affaba832f1/0_0_2560_1536/master/2560.jpg?width=1200&quality=85&auto=format&fit=max&s=09bb9eec5c28fc3a4b7e9a4006922d1e';
 export const ERROR_GALLERY_MESSAGE =
   'Response in Gallery in NOT okej. Response status is ';
 export const ERROR_BACKGROUND_MESSAGE =

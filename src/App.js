@@ -1,20 +1,21 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import Loading from './components/Loading';
-import Background from './components/Background';
-import { CategoryPageProvider } from './pages/categoryPage/CategoryPageContext';
+import { CategoryPageProvider } from './pages/category-page-context/CategoryPageContext';
+import Header from './components/header/Header';
 import './App.scss';
 const CategoryPage = lazy(() => import('./pages/categoryPage/CategoryPage'));
 const PhotoPage = lazy(() => import('./pages/photoPage/PhotoPage'));
 
 function App() {
+  
   return (
     <BrowserRouter>
       <CategoryPageProvider>
-        <div className='App'>
-          <Background />
-          <div className='bottom'>
+        <div className='main-page'>
+          <Header headerName={'KATEGÓRIE'} icon={true} />
+          <div className='main-page-content'>
             <Suspense fallback={<Loading />}>
               <Switch>
                 <Route path={'/'} exact component={CategoryPage} />

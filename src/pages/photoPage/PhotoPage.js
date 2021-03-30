@@ -1,23 +1,23 @@
 import React from 'react';
-import HeaderContent from '../../components/HeaderContent';
-import { AddPhoto } from '../../components/AddPhoto';
+import { AddPhoto } from '../../components/addButtons/addPhotoButton/AddPhoto';
 import { useParams, useHistory } from 'react-router-dom';
 import PhotoView from '../../modals/photoView/PhotoView';
 import { useEffect, useState } from 'react';
 import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
-import Loading from '../../components/Loading';
+// import Loading from '../../components/Loading';
 import { url_gallery, url_images } from '../../utils/url-util';
-import Photo from '../../components/Photo';
+import Photo from '../../components/photo/Photo';
 import {
   ERROR_GALLERY_PATH_MESSAGE,
   ERROR_IMAGES_MESSAGE,
 } from '../../constants/util-const';
+import './PhotoPage.scss';
 
 export default function PhotoPage() {
   const { tag } = useParams();
   const [image, setImage] = useState('');
   const [index, setIndex] = useState();
-  const [photoData, setPhotoData] = useState(null);
+  const [photoData, setPhotoData] = useState([]);
   const background = [];
   const history = useHistory();
 
@@ -109,21 +109,18 @@ export default function PhotoPage() {
     return () => (cleanUp = true);
   }, [history]);
 
-  if (photoData === null) return <Loading />;
+  // if (photoData === null) return <Loading />;
 
   return (
-    <div className='content'>
-      <HeaderContent headerName={tag} icon={true} />
-      <div className='img-area'>
-        {displayPhotos()}
-        <PhotoView
-          image={image}
-          prevIcon={() => prevIc(index)}
-          nextIcon={() => nextIc(index)}
-        />
-        <AddPhoto />
-        <AddPhotoModal galleryName={tag} />
-      </div>
+    <div className='photos'>
+      {displayPhotos()}
+      <PhotoView
+        image={image}
+        prevIcon={() => prevIc(index)}
+        nextIcon={() => nextIc(index)}
+      />
+      <AddPhoto />
+      <AddPhotoModal galleryName={tag} />
     </div>
   );
 }

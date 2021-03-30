@@ -1,14 +1,14 @@
-import './Photo_Category.scss';
+import React from 'react';
 
 export default function Photo(props){
   return (
     <div
       onClick={props.wrapperFunction}
-      className='photo_box'
+      className='photo'
       id='first_photo'
       data-toggle='modal'
       data-target='#photo-modal'>
-      <img className='img_gallery' src={props.photo} alt={'photos'} />
+      <img className='background' src={props.photo} alt={'photos'} />
     </div>
   );
 };
