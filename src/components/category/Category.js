@@ -8,7 +8,7 @@ export default function Category(props) {
         <img className='background' src={props.photo} alt={props.alt} />
         <div className='category-description'>
           <p className='title'>{props.theme}</p>
-          {/* <p className='num-photo'>{props.num_photo}</p> */}
+          <p className='num-photo'>{props.num_photo}</p>
         </div>
       </NavLink>
     </div>

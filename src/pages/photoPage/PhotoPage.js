@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { AddPhoto } from '../../components/addButtons/addPhotoButton/AddPhoto';
 import { useParams, useHistory } from 'react-router-dom';
 import PhotoView from '../../modals/photoView/PhotoView';
 import { useEffect, useState } from 'react';
 import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
 // import Loading from '../../components/Loading';
-import { urlGallery, urlImages } from '../../utils/url-util';
+import { urlImages } from '../../utils/url-util';
 import Photo from '../../components/photo/Photo';
-import {
-  ERROR_GALLERY_PATH_MESSAGE,
-  ERROR_IMAGES_MESSAGE,
-} from '../../constants/util-const';
+import { NO_PHOTO_IMAGE } from '../../constants/util-const';
 import './PhotoPage.scss';
+import { CategoryPageContext } from '../category-page-context/CategoryPageContext';
+import { fetchAllImages } from '../../api/fetch-data';
 
 export default function PhotoPage() {
   const { tag } = useParams();
@@ -20,6 +19,7 @@ export default function PhotoPage() {
   const [photoData, setPhotoData] = useState([]);
   const background = [];
   const history = useHistory();
+  const categoryContext = useContext(CategoryPageContext);
 
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
   const arrPhoto =
@@ -68,46 +68,24 @@ export default function PhotoPage() {
         })
     );
   };
-  const fetchImages = async (cleanUp) => {
-    try {
-      const response1 = await fetch(urlGallery(history.location.pathname));
-      if (response1.ok) {
-        const { images } = await response1.json();
-        if (images.length === 0 && !cleanUp) {
-          setPhotoData([]);
-        } else {
-          images.forEach(async (element, i) => {
-            try {
-              const response2 = await fetch(
-                urlImages('1200x720', element.fullpath)
-              );
-              if (response2.ok) {
-                if (images.length - i === 1 && !cleanUp) {
-                  setPhotoData(images);
-                }
-              } else {
-                data.splice(i, 1);
-                throw new Error(ERROR_IMAGES_MESSAGE + img.status);
-              }
-            } catch (e) {
-              console.info(e);
-            }
-          });
-        }
-      } else {
-        history.push('/');
-        throw new Error(ERROR_GALLERY_PATH_MESSAGE + response.status);
-      }
-    } catch (e) {
-      console.info(e);
-    }
-  };
 
   useEffect(() => {
     let cleanUp = false;
-    fetchImages(cleanUp);
-    return () => (cleanUp = true);
-  }, [history]);
+
+    fetchAllImages(cleanUp, history).then((data) => {
+      if (data.length) {
+        setPhotoData(data);
+        categoryContext.setBackground(urlImages('1200x720', data[0].fullpath));
+      } else {
+        setPhotoData([]);
+        categoryContext.setBackground(NO_PHOTO_IMAGE);
+      }
+    });
+    return () => {
+      cleanUp = true;
+      console.log('Unmount');
+    };
+  }, []);
 
   // if (photoData === null) return <Loading />;
 

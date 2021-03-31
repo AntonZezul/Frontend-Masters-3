@@ -1,6 +1,7 @@
-import './AddCategoryModal.scss';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import './AddCategoryModal.scss';
 
 export default function AddCategoryModal() {
   const headers = {
@@ -52,7 +53,7 @@ export default function AddCategoryModal() {
             aria-label='Close'>
             <span aria-hidden='true'>
               <img
-                src={process.env.PUBLIC_URL + '/icons/close-icon.svg'}
+                src={'/icons/close-icon.svg'}
                 alt={'close-icon'}
               />{' '}
               ZAVRIEŤ
@@ -79,7 +80,7 @@ export default function AddCategoryModal() {
                     />
                     <button type='submit' className='btn btn-success'>
                       <img
-                        src={process.env.PUBLIC_URL + '/icons/add-icon.svg'}
+                        src={'/icons/add-icon.svg'}
                         alt={'add-icon'}
                       />
                       PRIDAŤ

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch} from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import Loading from './components/Loading';
 import { CategoryPageProvider } from './pages/category-page-context/CategoryPageContext';
@@ -9,12 +9,11 @@ const CategoryPage = lazy(() => import('./pages/categoryPage/CategoryPage'));
 const PhotoPage = lazy(() => import('./pages/photoPage/PhotoPage'));
 
 function App() {
-  
   return (
-    <BrowserRouter>
-      <CategoryPageProvider>
+    <CategoryPageProvider>
+      <BrowserRouter>
         <div className='main-page'>
-          <Header headerName={'KATEGÓRIE'} icon={true} />
+          <Header />
           <div className='main-page-content'>
             <Suspense fallback={<Loading />}>
               <Switch>
@@ -24,8 +23,8 @@ function App() {
             </Suspense>
           </div>
         </div>
-      </CategoryPageProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </CategoryPageProvider>
   );
 }
 export default App;

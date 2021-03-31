@@ -1,3 +1,4 @@
+import React from 'react';
 import '../AddButtons.scss';
 
 export const AddCategory = () => (

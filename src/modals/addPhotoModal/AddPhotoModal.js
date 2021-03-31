@@ -126,7 +126,7 @@ export default function AddPhotoModal(props) {
             aria-label='Close'>
             <span aria-hidden='true'>
               <img
-                src={process.env.PUBLIC_URL + '/icons/close-icon.svg'}
+                src={'/icons/close-icon.svg'}
                 alt={'close-icon-modal'}
               />{' '}
               ZAVRIEŤ
@@ -149,7 +149,7 @@ export default function AddPhotoModal(props) {
               )}
               <img
                 id='icon_photo'
-                src={process.env.PUBLIC_URL + '/icons/add-photo-icon.svg'}
+                src={'/icons/add-photo-icon.svg'}
                 alt={'add-photos-modal'}
               />
               <p id='move_photo_text'>SEM PRESUNTE FOTKY</p>
@@ -191,7 +191,7 @@ export default function AddPhotoModal(props) {
                 onClick={() => postImages()}
                 className='btn btn-success'>
                 <img
-                  src={process.env.PUBLIC_URL + '/icons/add-icon.svg'}
+                  src={'/icons/add-icon.svg'}
                   alt={'add-icon-modal'}
                 />
                 PRIDAŤ

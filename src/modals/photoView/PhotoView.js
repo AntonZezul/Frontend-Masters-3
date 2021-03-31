@@ -1,3 +1,4 @@
+import React from 'react';
 import './PhotoView.scss';
 
 export default function PhotoView(props) {
@@ -18,7 +19,7 @@ export default function PhotoView(props) {
               <span aria-hidden='true'>
                 <img
                   style={{ paddingRight: 5 }}
-                  src={process.env.PUBLIC_URL + '/icons/close-icon.svg'}
+                  src={'/icons/close-icon.svg'}
                   alt='close-icon'
                 />
                 ZAVRIEŤ
@@ -31,14 +32,14 @@ export default function PhotoView(props) {
               <div id='prev-icon'>
                 <img
                   onClick={props.prevIcon}
-                  src={process.env.PUBLIC_URL + '/icons/prev-icon.svg'}
+                  src={'/icons/prev-icon.svg'}
                   alt='prev-icon'
                 />
               </div>
               <div id='next-icon'>
                 <img
                   onClick={props.nextIcon}
-                  src={process.env.PUBLIC_URL + '/icons/next-icon.svg'}
+                  src={'/icons/next-icon.svg'}
                   alt='next-icon'
                 />
               </div>
