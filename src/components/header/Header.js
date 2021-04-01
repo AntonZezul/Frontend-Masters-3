@@ -6,6 +6,7 @@ import './Header.scss';
 export default function HeaderContent() {
   const match = useRouteMatch();
   const history = useHistory();
+  const categoryName = history.location.pathname.replace('/', '');
 
   return (
     <div className='main-page-header'>
@@ -22,7 +23,7 @@ export default function HeaderContent() {
                 alt={'back_icon'}
               />
             </Link>
-            <h2>{history.location.pathname.replace('/', '')}</h2>
+            <h2>{categoryName}</h2>
           </div>
         ) : (
           <h2>KATEGÓRIE</h2>

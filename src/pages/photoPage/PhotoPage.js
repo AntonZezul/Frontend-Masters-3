@@ -7,10 +7,11 @@ import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
 // import Loading from '../../components/Loading';
 import { urlImages } from '../../utils/url-util';
 import Photo from '../../components/photo/Photo';
-import { NO_PHOTO_IMAGE } from '../../constants/util-const';
+import { LOW_QUALITY_SRC, NO_PHOTO_IMAGE } from '../../constants/util-const';
 import './PhotoPage.scss';
 import { CategoryPageContext } from '../category-page-context/CategoryPageContext';
 import { fetchAllImages } from '../../api/fetch-data';
+import useProgressiveImg from '../../custom-hooks/ProgressiveImg';
 
 export default function PhotoPage() {
   const { tag } = useParams();
@@ -19,6 +20,7 @@ export default function PhotoPage() {
   const [photoData, setPhotoData] = useState([]);
   const background = [];
   const history = useHistory();
+  const categoryName = history.location.pathname;
   const categoryContext = useContext(CategoryPageContext);
 
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
@@ -61,7 +63,7 @@ export default function PhotoPage() {
           return (
             <Photo
               key={i}
-              photo={urlImages('1200x720', data.fullpath)}
+              highQualitySrc={urlImages('1200x720', data.fullpath)}
               wrapperFunction={() => wrapperFunction(i)}
             />
           );
@@ -72,13 +74,19 @@ export default function PhotoPage() {
   useEffect(() => {
     let cleanUp = false;
 
-    fetchAllImages(cleanUp, history).then((data) => {
-      if (data.length) {
-        setPhotoData(data);
-        categoryContext.setBackground(urlImages('1200x720', data[0].fullpath));
+    fetchAllImages(cleanUp, categoryName).then((data) => {
+      if (data) {
+        if (data.length) {
+          setPhotoData(data);
+          categoryContext.setBackground(
+            urlImages('1200x720', data[0].fullpath)
+          );
+        } else {
+          setPhotoData([]);
+          categoryContext.setBackground(NO_PHOTO_IMAGE);
+        }
       } else {
-        setPhotoData([]);
-        categoryContext.setBackground(NO_PHOTO_IMAGE);
+        history.push('/');
       }
     });
     return () => {

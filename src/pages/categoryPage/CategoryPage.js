@@ -44,7 +44,7 @@ const CategoryPage = () => {
                 tag={data.name}
                 theme={data.name}
                 alt={data.name}
-                photo={
+                highQualitySrc={
                   data.image
                     ? urlImages('1200x720', data.image.fullpath)
                     : NO_PHOTO_IMAGE
