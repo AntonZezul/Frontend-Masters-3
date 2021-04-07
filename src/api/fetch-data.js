@@ -43,6 +43,7 @@ export const fetchBackground = async () => {
   }
 };
 
+<<<<<<< HEAD
 const fetchNumImage = async (categoryName) => {
   const response = await fetch(urlGallery('/' + categoryName));
   const { images } = await response.json();
@@ -70,15 +71,28 @@ export const fetchNumImages = async (categoryData) => {
 };
 
 export const fetchAllImages = async (categoryName) => {
+=======
+export const fetchAllImages = async (cleanUp, categoryName) => {
+>>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
   try {
     const response1 = await fetch(urlGallery(categoryName));
     if (response1.ok) {
       const { images } = await response1.json();
+<<<<<<< HEAD
       if (images.length === 0) {
         return [];
       } else {
         fetchImage(images);
         return images;
+=======
+      if (images.length === 0 && !cleanUp) {
+        return [];
+      } else {
+        fetchImage(images);
+        if (!cleanUp) {
+          return images;
+        }
+>>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
       }
     } else {
       throw new Error(ERROR_GALLERY_PATH_MESSAGE);

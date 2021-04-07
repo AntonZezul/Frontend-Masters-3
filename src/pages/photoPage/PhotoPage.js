@@ -21,8 +21,12 @@ export default function PhotoPage() {
   const background = [];
   const history = useHistory();
   const categoryName = history.location.pathname;
+<<<<<<< HEAD
   const photoContext = useContext(MainContext);
   const photoData = photoContext.getPhotoData();
+=======
+  const categoryContext = useContext(CategoryPageContext);
+>>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
 
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
   const arrPhoto =
@@ -75,6 +79,7 @@ export default function PhotoPage() {
   useEffect(() => {
     let cleanUp = false;
 
+<<<<<<< HEAD
     fetchAllImages(categoryName).then((data) => {
       if (data) {
         if (data.length) {
@@ -87,6 +92,18 @@ export default function PhotoPage() {
             photoContext.setPhotoData([]);
             photoContext.setBackground(NO_PHOTO_IMAGE);
           }
+=======
+    fetchAllImages(cleanUp, categoryName).then((data) => {
+      if (data) {
+        if (data.length) {
+          setPhotoData(data);
+          categoryContext.setBackground(
+            urlImages('1200x720', data[0].fullpath)
+          );
+        } else {
+          setPhotoData([]);
+          categoryContext.setBackground(NO_PHOTO_IMAGE);
+>>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
         }
       } else {
         history.push('/');

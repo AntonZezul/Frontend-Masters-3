@@ -20,7 +20,11 @@ export default function Category(props) {
             filter: blur ? 'blur(20px)' : 'none',
             transition: blur ? 'none' : 'filter 0.3s ease-out',
           }}
+<<<<<<< HEAD
           // loading='lazy'
+=======
+          loading='lazy'
+>>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
         />
         <div className='category-description'>
           <p className='title'>{props.theme}</p>
