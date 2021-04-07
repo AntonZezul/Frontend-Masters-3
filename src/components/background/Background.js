@@ -1,23 +1,14 @@
-<<<<<<< HEAD
 import React, { useContext} from 'react';
 import { MainContext } from '../../pages/context/MainContext';
+import useProgressiveImg from '../../custom-hooks/ProgressiveImg';
 
 export default function Background() {
   const backContext = useContext(MainContext);
-=======
-import React, { useContext } from 'react';
-import { LOW_QUALITY_SRC } from '../../constants/util-const';
-import useProgressiveImg from '../../custom-hooks/ProgressiveImg';
-import { CategoryPageContext } from '../../pages/category-page-context/CategoryPageContext';
-
-export default function Background() {
-  const backContext = useContext(CategoryPageContext);
-  const [src, { blur }] = useProgressiveImg(LOW_QUALITY_SRC, backContext.getBackground());
->>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
+  // const [src, { blur }] = useProgressiveImg('', backContext.getBackground());
 
   return (
     <img
-      src={src}
+      src={backContext.getBackground()}
       className='background'
       alt=''
       style={{

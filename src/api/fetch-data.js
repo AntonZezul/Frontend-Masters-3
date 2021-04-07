@@ -43,7 +43,6 @@ export const fetchBackground = async () => {
   }
 };
 
-<<<<<<< HEAD
 const fetchNumImage = async (categoryName) => {
   const response = await fetch(urlGallery('/' + categoryName));
   const { images } = await response.json();
@@ -54,47 +53,35 @@ export const fetchNumImages = async (categoryData) => {
   const arrayNum = [];
   const arrayIndex = [];
   // await Promise.all(
-    categoryData.map(async (el, i) => {
-      const num = await fetchNumImage(el.name);
-      //arrayIndex.push(i);
-      //arrayIndex.sort((a, b) => a - b);
-      // console.log(arrayIndex)
-      arrayNum.push(num);
+  categoryData.map(async (el, i) => {
+    const num = await fetchNumImage(el.name);
+    //arrayIndex.push(i);
+    //arrayIndex.sort((a, b) => a - b);
+    // console.log(arrayIndex)
+    arrayNum.push(num);
 
-      //arrayNum.sort((a, b) => arrayIndex.indexOf(a) - arrayIndex.indexOf(b));
-      // return el
-    })
-    // );
-    // console.log(arrayIndex.forEach((i)=>{console.log(i)}))
-    // arrayNum.sort((a,b)=>a-b)
+    //arrayNum.sort((a, b) => arrayIndex.indexOf(a) - arrayIndex.indexOf(b));
+    // return el
+  });
+  // );
+  // console.log(arrayIndex.forEach((i)=>{console.log(i)}))
+  // arrayNum.sort((a,b)=>a-b)
   return arrayNum;
 };
 
-export const fetchAllImages = async (categoryName) => {
-=======
 export const fetchAllImages = async (cleanUp, categoryName) => {
->>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
   try {
     const response1 = await fetch(urlGallery(categoryName));
     if (response1.ok) {
       const { images } = await response1.json();
-<<<<<<< HEAD
+
       if (images.length === 0) {
         return [];
       } else {
         fetchImage(images);
         return images;
-=======
-      if (images.length === 0 && !cleanUp) {
-        return [];
-      } else {
-        fetchImage(images);
-        if (!cleanUp) {
-          return images;
-        }
->>>>>>> b6726117e0079f779ff0fbc9d42c72e75d0d3018
       }
-    } else {
+    }else{
       throw new Error(ERROR_GALLERY_PATH_MESSAGE);
     }
   } catch (e) {
