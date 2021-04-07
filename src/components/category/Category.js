@@ -1,11 +1,27 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { LOW_QUALITY_SRC } from '../../constants/util-const';
+import useProgressiveImg from '../../custom-hooks/ProgressiveImg';
 
 export default function Category(props) {
+  const [src, { blur }] = useProgressiveImg(
+    LOW_QUALITY_SRC,
+    props.highQualitySrc
+  );
+
   return (
     <div className='category' onMouseEnter={props.onMouseEnter}>
       <NavLink to={`/${props.tag}`} style={{ textDecoration: 'none' }}>
-        <img className='background' src={props.photo} alt={props.alt} />
+        <img
+          className='background'
+          src={src}
+          alt={props.alt}
+          style={{
+            filter: blur ? 'blur(20px)' : 'none',
+            transition: blur ? 'none' : 'filter 0.3s ease-out',
+          }}
+          // loading='lazy'
+        />
         <div className='category-description'>
           <p className='title'>{props.theme}</p>
           <p className='num-photo'>{props.num_photo}</p>

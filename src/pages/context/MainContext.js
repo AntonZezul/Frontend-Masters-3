@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-export const CategoryPageContext = React.createContext();
+export const MainContext = React.createContext();
 
 export const ProviderFactory = () => {
   const [background, setBackground] = useState('');
   const [numPhoto, setNumPhoto] = useState(0);
   const [categoryData, setCategoryData] = useState([]);
+  const [photoData, setPhotoData] = useState([]);
 
   return {
     getBackground: () => background,
@@ -16,15 +17,18 @@ export const ProviderFactory = () => {
 
     getCategoryData: () => categoryData,
     setCategoryData: (categoryData) => setCategoryData(categoryData),
+
+    getPhotoData: () => photoData,
+    setPhotoData: (photoData) => setPhotoData(photoData),
   };
 };
 
-export const CategoryPageProvider = ({ children }) => {
+export const MainProvider = ({ children }) => {
   return (
-    <CategoryPageContext.Provider value={ProviderFactory()}>
+    <MainContext.Provider value={ProviderFactory()}>
       {children}
-    </CategoryPageContext.Provider>
+    </MainContext.Provider>
   );
 };
 
-export default CategoryPageContext;
+export default MainContext;

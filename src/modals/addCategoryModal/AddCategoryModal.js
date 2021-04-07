@@ -12,7 +12,7 @@ export default function AddCategoryModal() {
     initialValues: { categoryName: '' },
     validationSchema: Yup.object({
       categoryName: Yup.string()
-        .max(15, 'Názov galérie nesmie presiahnuť 15 znakov.')
+        .max(20, 'Názov galérie nesmie presiahnuť 20 znakov.')
         .required('Názov galérie nemôže byť prázdny.')
         .matches(/^(?!.*\/).+$/, 'Názov galérie nemôže obsahovať znak "/".'),
     }),

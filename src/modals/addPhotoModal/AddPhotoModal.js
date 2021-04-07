@@ -67,6 +67,7 @@ export default function AddPhotoModal(props) {
         id: 'openButton',
         className: 'upload_button',
         onClick: () => {
+          setFileArr([]);
           inputRef.current.click();
         },
       },
@@ -125,10 +126,7 @@ export default function AddPhotoModal(props) {
             data-dismiss='modal'
             aria-label='Close'>
             <span aria-hidden='true'>
-              <img
-                src={'/icons/close-icon.svg'}
-                alt={'close-icon-modal'}
-              />{' '}
+              <img src={'/icons/close-icon.svg'} alt={'close-icon-modal'} />{' '}
               ZAVRIEŤ
             </span>
           </button>
@@ -166,20 +164,23 @@ export default function AddPhotoModal(props) {
               <div id='previewId' className='preview'>
                 {fileArr.map((file, i) => {
                   return (
-                    <div key={i} className='preview-image'>
-                      <div
-                        className='preview-remove'
-                        data-name={file.name}
-                        onClick={() => {
-                          fileArr.splice(i, 1);
-                          const block = document
-                            .querySelector(`[data-name="${file.name}"]`)
-                            .closest('.preview-image');
-                          block.remove();
-                        }}>
-                        &times;
+                    <div key={i}>
+                      <div className='preview-image' data-name={file.name}>
+                        <div
+                          className='preview-remove'
+                          onClick={() => {
+                            fileArr.splice(i, 1);
+                            const block = document.querySelector(
+                              `[data-name="${file.name}"]`
+                            );
+                            console.log(fileArr);
+                            console.log(block);
+                            block.remove();
+                          }}>
+                          &times;
+                        </div>
+                        {file.name}
                       </div>
-                      {file.name}
                     </div>
                   );
                 })}
@@ -190,10 +191,7 @@ export default function AddPhotoModal(props) {
                 type='button'
                 onClick={() => postImages()}
                 className='btn btn-success'>
-                <img
-                  src={'/icons/add-icon.svg'}
-                  alt={'add-icon-modal'}
-                />
+                <img src={'/icons/add-icon.svg'} alt={'add-icon-modal'} />
                 PRIDAŤ
               </button>
             </div>
