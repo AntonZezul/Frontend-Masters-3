@@ -9,65 +9,53 @@ import './CategoryPage.scss';
 import {
   fetchBackground,
   fetchGalleries,
-  fetchNumImages,
+  countImagesInGalleries,
 } from '../../api/fetch-data';
 
 const CategoryPage = () => {
   const categoryContext = useContext(MainContext);
-  const [categoryNum, setCategoryNum] = useState([]);
+  const [categoryNum, setCategoryNum] = useState(new Map());
   const categoryData = categoryContext.getCategoryData();
   const id = [];
 
   useEffect(() => {
     let cleanUp = false;
 
-    fetchBackground().then((background) => {
-      if (!cleanUp) categoryContext.setBackground(background);
-    });
-    fetchGalleries(cleanUp).then((galleries) => {
-      if (!cleanUp) categoryContext.setCategoryData(galleries);
-    });
+    fetchBackground()
+      .then((background) => {
+        if (!cleanUp) categoryContext.setBackground(background);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
 
+    fetchGalleries()
+      .then((galleries) => {
+        if (!cleanUp) {
+          categoryContext.setCategoryData(galleries);
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     return () => {
       cleanUp = true;
-      console.log('Unmount galleries');
     };
   }, []);
 
   useEffect(() => {
     const data = categoryData.filter((el) => el.image);
-    // categoryData
-    //   .filter((el) => el.image)
-    //   .forEach((el) => {
-    fetchNumImages(data)
-      // .then((images) => {
-      //   return images.sort((a, b) => a - b);
-      // })
-      .then((json) => {
-        console.log(json)
+    countImagesInGalleries(data)
+      .then((data) => setCategoryNum(data))
+      .catch((e) => {
+        console.log(e);
       });
-    // data.forEach(el=>{console.log(el.name)})
-
-    // numPhotoArray.push(images)
-    // images.forEach(element=>{
-    //  console.log((images.substring(images.length, images.lastIndexOf('/')).replace("/","")))
-    // if((el.name).includes(images)){
-    // numPhotoArray.push(images)
-    // console.log('flflfl')
-    // }
-    // })
-    // });
-    // });
-    // setCategoryNum(numPhotoArray)
   }, [categoryData]);
-
-  // console.log(categoryNum)
 
   return (
     <div className='categories'>
-      {categoryData
-        // .sort((a, b) => a.name.localeCompare(b.name))
-        .map((data, i) => {
+      {categoryData &&
+        categoryData.map((data, i) => {
           if (
             (data.path !== data.name && !data.path.includes('%20')) ||
             data.path.length > 20
@@ -87,7 +75,9 @@ const CategoryPage = () => {
                     : NO_PHOTO_IMAGE
                 }
                 num_photo={
-                  data.image ? `${categoryNum[id]} fotiek` : '0 fotiek'
+                  data.image
+                    ? `${categoryNum.get(data.name)} fotiek`
+                    : '0 fotiek'
                 }
                 onMouseEnter={
                   data.image

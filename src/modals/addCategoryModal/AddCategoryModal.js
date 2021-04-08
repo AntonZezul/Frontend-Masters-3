@@ -52,11 +52,7 @@ export default function AddCategoryModal() {
             data-dismiss='modal'
             aria-label='Close'>
             <span aria-hidden='true'>
-              <img
-                src={'/icons/close-icon.svg'}
-                alt={'close-icon'}
-              />{' '}
-              ZAVRIEŤ
+              <img src={'/icons/close-icon.svg'} alt={'close-icon'} /> ZAVRIEŤ
             </span>
           </button>
           <div className='modal-content-without-close'>
@@ -79,10 +75,7 @@ export default function AddCategoryModal() {
                       onChange={formik.handleChange}
                     />
                     <button type='submit' className='btn btn-success'>
-                      <img
-                        src={'/icons/add-icon.svg'}
-                        alt={'add-icon'}
-                      />
+                      <img src={'/icons/add-icon.svg'} alt={'add-icon'} />
                       PRIDAŤ
                     </button>
                   </form>

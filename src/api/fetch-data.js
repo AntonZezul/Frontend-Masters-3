@@ -4,88 +4,72 @@ import {
   ERROR_BACKGROUND_MESSAGE,
   ERROR_GALLERY_MESSAGE,
   ERROR_GALLERY_PATH_MESSAGE,
+  ERROR_IMAGES_COUNT,
   ERROR_IMAGES_MESSAGE,
 } from '../constants/util-const';
 
-export const fetchGalleries = async (cleanUp) => {
+export const fetchGalleries = async () => {
+  const response = await fetch(urlGallery(''));
+  if (response.ok) {
+    const { galleries } = await response.json();
+    return galleries;
+  } else throw new Error(ERROR_GALLERY_MESSAGE);
+};
+
+export const countImagesInGalleries = async (galleries) => {
+  const tempMap = new Map();
+
+  const promises = galleries.map(async ({ name }) => {
+    const count = await fetchImageCountByName(name);
+    return () => tempMap.set(name, count);
+  });
+  const setterArray = await Promise.all(promises);
+  setterArray.forEach((func) => func());
+
+  return tempMap;
+};
+
+const fetchImageCountByName = async (categoryName) => {
   try {
-    const response = await fetch(urlGallery(''));
-    if (response.ok) {
-      const { galleries } = await response.json();
-      if (!cleanUp) {
-        return galleries;
-      }
-    } else throw new Error(ERROR_GALLERY_MESSAGE);
+    const response = await fetch(urlGallery('/' + categoryName));
+    const { images } = await response.json();
+    return images?.length || 0;
   } catch (e) {
-    console.info(e);
+    throw new Error(ERROR_IMAGES_COUNT);
   }
 };
 
 export const fetchBackground = async () => {
-  try {
-    const backgroundArray = [];
-    const response = await fetch(urlGallery(''));
-    if (response.ok) {
-      const { galleries } = await response.json();
-      galleries.forEach((el) => {
-        if (el.image === undefined) {
-          return null;
-        } else {
-          return backgroundArray.push(el.image.fullpath);
-        }
-      });
-      return urlImages('1200x720', backgroundArray[0]);
-    } else {
-      throw new Error(ERROR_BACKGROUND_MESSAGE);
-    }
-  } catch (e) {
-    console.info(e);
+  const backgroundArray = [];
+  const response = await fetch(urlGallery(''));
+  if (response.ok) {
+    const { galleries } = await response.json();
+    galleries.forEach((el) => {
+      if (el.image === undefined) {
+        return null;
+      } else {
+        return backgroundArray.push(el.image.fullpath);
+      }
+    });
+    return urlImages('1200x720', backgroundArray[0]);
+  } else {
+    throw new Error(ERROR_BACKGROUND_MESSAGE);
   }
 };
 
-const fetchNumImage = async (categoryName) => {
-  const response = await fetch(urlGallery('/' + categoryName));
-  const { images } = await response.json();
-  return images.length;
-};
+export const fetchAllImages = async (categoryName) => {
+  const response1 = await fetch(urlGallery(categoryName));
+  if (response1.ok) {
+    const { images } = await response1.json();
 
-export const fetchNumImages = async (categoryData) => {
-  const arrayNum = [];
-  const arrayIndex = [];
-  // await Promise.all(
-  categoryData.map(async (el, i) => {
-    const num = await fetchNumImage(el.name);
-    //arrayIndex.push(i);
-    //arrayIndex.sort((a, b) => a - b);
-    // console.log(arrayIndex)
-    arrayNum.push(num);
-
-    //arrayNum.sort((a, b) => arrayIndex.indexOf(a) - arrayIndex.indexOf(b));
-    // return el
-  });
-  // );
-  // console.log(arrayIndex.forEach((i)=>{console.log(i)}))
-  // arrayNum.sort((a,b)=>a-b)
-  return arrayNum;
-};
-
-export const fetchAllImages = async (cleanUp, categoryName) => {
-  try {
-    const response1 = await fetch(urlGallery(categoryName));
-    if (response1.ok) {
-      const { images } = await response1.json();
-
-      if (images.length === 0) {
-        return [];
-      } else {
-        fetchImage(images);
-        return images;
-      }
-    }else{
-      throw new Error(ERROR_GALLERY_PATH_MESSAGE);
+    if (images.length === 0) {
+      return [];
+    } else {
+      fetchImage(images);
+      return images;
     }
-  } catch (e) {
-    console.info(e);
+  } else {
+    throw new Error(ERROR_GALLERY_PATH_MESSAGE);
   }
 };
 

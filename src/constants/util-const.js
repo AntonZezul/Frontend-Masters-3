@@ -3,11 +3,11 @@ export const NO_PHOTO_IMAGE =
 export const LOW_QUALITY_SRC =
   'https://i2.wp.com/i.pinimg.com/originals/2a/1a/91/2a1a91d417c99110d88a9da04c8e11b0.jpg';
 
-export const ERROR_GALLERY_MESSAGE =
-  'Response in Gallery in NOT okej. Response status is ';
-export const ERROR_BACKGROUND_MESSAGE =
-  'Response in Background in NOT okej. Response status is ';
+export const ERROR_GALLERY_MESSAGE = 'Response in Gallery in NOT okej.';
+export const ERROR_BACKGROUND_MESSAGE = 'Response in Background in NOT okej.';
 export const ERROR_GALLERY_PATH_MESSAGE =
-  'Response in Gallery/{path} in NOT okej. Response status is ';
+  'Response in Gallery/{path} in NOT okej.';
 export const ERROR_IMAGES_MESSAGE =
-  'Response in Images/{WxH}/fullpath in NOT okej. Response status is ';
+  'Response in Images/{WxH}/fullpath in NOT okej.';
+export const ERROR_IMAGES_COUNT =
+  'Response in fetchImageCountByName in NOT okej.';

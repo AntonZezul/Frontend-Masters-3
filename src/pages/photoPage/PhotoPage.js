@@ -4,14 +4,12 @@ import { useParams, useHistory } from 'react-router-dom';
 import PhotoView from '../../modals/photoView/PhotoView';
 import { useEffect, useState } from 'react';
 import AddPhotoModal from '../../modals/addPhotoModal/AddPhotoModal';
-// import Loading from '../../components/Loading';
 import { urlImages } from '../../utils/url-util';
 import Photo from '../../components/photo/Photo';
-import { LOW_QUALITY_SRC, NO_PHOTO_IMAGE } from '../../constants/util-const';
+import { NO_PHOTO_IMAGE } from '../../constants/util-const';
 import './PhotoPage.scss';
 import { MainContext } from '../context/MainContext';
 import { fetchAllImages } from '../../api/fetch-data';
-import useProgressiveImg from '../../custom-hooks/ProgressiveImg';
 
 export default function PhotoPage() {
   const { tag } = useParams();
@@ -57,49 +55,51 @@ export default function PhotoPage() {
 
   const displayPhotos = () => {
     return (
-      photoData
-        // .sort((a, b) => Date.parse(a.modified) - Date.parse(b.modified))
-        .map((data, i) => {
-          background.push(data.fullpath);
-          return (
-            <Photo
-              key={i}
-              highQualitySrc={urlImages('1200x720', data.fullpath)}
-              wrapperFunction={() => wrapperFunction(i)}
-            />
-          );
-        })
+      photoData &&
+      photoData.map((data, i) => {
+        background.push(data.fullpath);
+        return (
+          <Photo
+            key={i}
+            highQualitySrc={urlImages('1200x720', data.fullpath)}
+            wrapperFunction={() => wrapperFunction(i)}
+          />
+        );
+      })
     );
   };
 
   useEffect(() => {
     let cleanUp = false;
 
-    fetchAllImages(categoryName).then((data) => {
-      if (data) {
-        if (data.length) {
-          if (!cleanUp) {
-            photoContext.setPhotoData(data);
-            photoContext.setBackground(urlImages('1200x720', data[0].fullpath));
+    fetchAllImages(categoryName)
+      .then((data) => {
+        if (data) {
+          if (data.length) {
+            if (!cleanUp) {
+              photoContext.setPhotoData(data);
+              photoContext.setBackground(
+                urlImages('1200x720', data[0].fullpath)
+              );
+            }
+          } else {
+            if (!cleanUp) {
+              photoContext.setPhotoData([]);
+              photoContext.setBackground(NO_PHOTO_IMAGE);
+            }
           }
         } else {
-          if (!cleanUp) {
-            photoContext.setPhotoData([]);
-            photoContext.setBackground(NO_PHOTO_IMAGE);
-          }
+          history.push('/');
         }
-      } else {
-        history.push('/');
-      }
-    });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
     return () => {
       cleanUp = true;
       photoContext.setPhotoData([]);
-      console.log('Unmount photoPage');
     };
   }, []);
-
-  // if (photoData === null) return <Loading />;
 
   return (
     <div className='photos'>
