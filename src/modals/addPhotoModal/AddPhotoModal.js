@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { fetchPostImages } from '../../api/fetch-data';
 import './AddPhotoModal.scss';
 
 export default function AddPhotoModal(props) {
@@ -58,6 +59,7 @@ export default function AddPhotoModal(props) {
       div.removeEventListener('dragover', handleDrag);
       div.removeEventListener('drop', handleDrop);
     };
+    // eslint-disable-next-line
   }, []);
 
   const uploadButton = () => {
@@ -93,26 +95,10 @@ export default function AddPhotoModal(props) {
     const formData = new FormData();
     fileArr.forEach(async (el) => {
       formData.append('path', el, el.name);
-      try {
-        const response = await fetch(
-          `http://api.programator.sk/gallery/${props.galleryName}`,
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
-        if (response.ok) {
-          setFileArr([]);
-          return response.json();
-        } else {
-          throw new Error(
-            'Post in Gallery/{path} in NOT okej. Response status is ' +
-              response.status
-          );
-        }
-      } catch (err) {
-        return console.log(err);
-      }
+      fetchPostImages(props.galleryName, {
+        method: 'POST',
+        body: formData,
+      }).then((data) => setFileArr(data));
     });
   };
 
@@ -162,28 +148,29 @@ export default function AddPhotoModal(props) {
               />
               {uploadButton()}
               <div id='previewId' className='preview'>
-                {fileArr.map((file, i) => {
-                  return (
-                    <div key={i}>
-                      <div className='preview-image' data-name={file.name}>
-                        <div
-                          className='preview-remove'
-                          onClick={() => {
-                            fileArr.splice(i, 1);
-                            const block = document.querySelector(
-                              `[data-name="${file.name}"]`
-                            );
-                            console.log(fileArr);
-                            console.log(block);
-                            block.remove();
-                          }}>
-                          &times;
+                {fileArr &&
+                  fileArr.map((file, i) => {
+                    return (
+                      <div key={i}>
+                        <div className='preview-image' data-name={file.name}>
+                          <div
+                            className='preview-remove'
+                            onClick={() => {
+                              fileArr.splice(i, 1);
+                              const block = document.querySelector(
+                                `[data-name="${file.name}"]`
+                              );
+                              console.log(fileArr);
+                              console.log(block);
+                              block.remove();
+                            }}>
+                            &times;
+                          </div>
+                          {file.name}
                         </div>
-                        {file.name}
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             </div>
             <div className='modal-footer'>

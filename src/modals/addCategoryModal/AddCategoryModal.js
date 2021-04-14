@@ -2,6 +2,7 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import './AddCategoryModal.scss';
+import { fetchPostGallery } from '../../api/fetch-data';
 
 export default function AddCategoryModal() {
   const headers = {
@@ -18,27 +19,13 @@ export default function AddCategoryModal() {
     }),
 
     onSubmit: async (values) => {
-      try {
-        const response = await fetch('http://api.programator.sk/gallery', {
-          method: 'POST',
-          body: JSON.stringify({
-            name: values.categoryName,
-          }),
-          headers: headers,
-        });
-        if (response.ok) {
-          return response.json();
-        }
-        const error = await response.json();
-        const e = new Error(
-          'Post request on gallery is NOT okej. Response status is ' +
-            response.status
-        );
-        e.data = error;
-        throw e;
-      } catch (err) {
-        return console.info(err);
-      }
+      fetchPostGallery({
+        method: 'POST',
+        body: JSON.stringify({
+          name: values.categoryName,
+        }),
+        headers: headers,
+      });
     },
   });
 

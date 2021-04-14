@@ -41,6 +41,7 @@ const CategoryPage = () => {
     return () => {
       cleanUp = true;
     };
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -71,7 +72,7 @@ const CategoryPage = () => {
                 alt={data.name}
                 highQualitySrc={
                   data.image
-                    ? urlImages('1200x720', data.image.fullpath)
+                    ? urlImages('800x600', data.image.fullpath)
                     : NO_PHOTO_IMAGE
                 }
                 num_photo={
@@ -83,7 +84,7 @@ const CategoryPage = () => {
                   data.image
                     ? () =>
                         categoryContext.setBackground(
-                          urlImages('1200x720', data.image.fullpath)
+                          urlImages('800x600', data.image.fullpath)
                         )
                     : () => categoryContext.setBackground(NO_PHOTO_IMAGE)
                 }

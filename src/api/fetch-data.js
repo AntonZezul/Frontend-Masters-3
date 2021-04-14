@@ -1,13 +1,16 @@
 import { urlGallery, urlImages } from '../utils/url-util';
-
 import {
   ERROR_BACKGROUND_MESSAGE,
   ERROR_GALLERY_MESSAGE,
   ERROR_GALLERY_PATH_MESSAGE,
   ERROR_IMAGES_COUNT,
   ERROR_IMAGES_MESSAGE,
+  ERROR_POST_400,
+  ERROR_POST_409,
+  ERROR_POST_500,
 } from '../constants/util-const';
 
+//Get requests
 export const fetchGalleries = async () => {
   const response = await fetch(urlGallery(''));
   if (response.ok) {
@@ -18,7 +21,6 @@ export const fetchGalleries = async () => {
 
 export const countImagesInGalleries = async (galleries) => {
   const tempMap = new Map();
-
   const promises = galleries.map(async ({ name }) => {
     const count = await fetchImageCountByName(name);
     return () => tempMap.set(name, count);
@@ -27,16 +29,6 @@ export const countImagesInGalleries = async (galleries) => {
   setterArray.forEach((func) => func());
 
   return tempMap;
-};
-
-const fetchImageCountByName = async (categoryName) => {
-  try {
-    const response = await fetch(urlGallery('/' + categoryName));
-    const { images } = await response.json();
-    return images?.length || 0;
-  } catch (e) {
-    throw new Error(ERROR_IMAGES_COUNT);
-  }
 };
 
 export const fetchBackground = async () => {
@@ -51,7 +43,7 @@ export const fetchBackground = async () => {
         return backgroundArray.push(el.image.fullpath);
       }
     });
-    return urlImages('1200x720', backgroundArray[0]);
+    return urlImages('800x600', backgroundArray[0]);
   } else {
     throw new Error(ERROR_BACKGROUND_MESSAGE);
   }
@@ -73,10 +65,20 @@ export const fetchAllImages = async (categoryName) => {
   }
 };
 
+const fetchImageCountByName = async (categoryName) => {
+  try {
+    const response = await fetch(urlGallery('/' + categoryName));
+    const { images } = await response.json();
+    return images?.length || 0;
+  } catch (e) {
+    throw new Error(ERROR_IMAGES_COUNT);
+  }
+};
+
 const fetchImage = (images) => {
   images.forEach(async (element, i) => {
     try {
-      const response2 = await fetch(urlImages('1200x720', element.fullpath));
+      const response2 = await fetch(urlImages('800x600', element.fullpath));
       if (!response2.ok) {
         images.splice(i, 1);
         throw new Error(ERROR_IMAGES_MESSAGE);
@@ -85,4 +87,35 @@ const fetchImage = (images) => {
       console.info(e);
     }
   });
+};
+
+//Post requests
+export const fetchPostImages = async (galleryName, options) => {
+  try {
+    await fetch(urlGallery('/' + galleryName), options);
+    return [];
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const fetchPostGallery = async (options) => {
+  try {
+    const response = await fetch(urlGallery(''), options);
+    if (response.ok) {
+      console.log('OK');
+    } else {
+      if (response.status === 400) {
+        throw new Error(ERROR_POST_400);
+      }
+      if (response.status === 409) {
+        throw new Error(ERROR_POST_409);
+      }
+      if (response.status === 500) {
+        throw new Error(ERROR_POST_500);
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };

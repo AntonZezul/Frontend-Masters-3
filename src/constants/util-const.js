@@ -11,3 +11,7 @@ export const ERROR_IMAGES_MESSAGE =
   'Response in Images/{WxH}/fullpath in NOT okej.';
 export const ERROR_IMAGES_COUNT =
   'Response in fetchImageCountByName in NOT okej.';
+export const ERROR_POST_400 =
+  'Chybne zadaný request - nevhodný obsah podľa schémy.';
+export const ERROR_POST_409 = 'Takáto galéria už existuje';
+export const ERROR_POST_500 = 'Nedefinovaná chyba';

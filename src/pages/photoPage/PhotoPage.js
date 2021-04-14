@@ -15,7 +15,6 @@ export default function PhotoPage() {
   const { tag } = useParams();
   const [image, setImage] = useState('');
   const [index, setIndex] = useState();
-  // const [photoData, setPhotoData] = useState([]);
   const background = [];
   const history = useHistory();
   const categoryName = history.location.pathname;
@@ -25,7 +24,7 @@ export default function PhotoPage() {
   const arrID = photoData !== null ? photoData.map((_, i) => i) : null;
   const arrPhoto =
     photoData !== null
-      ? photoData.map((photo) => urlImages('1200x720', photo.fullpath))
+      ? photoData.map((photo) => urlImages('800x600', photo.fullpath))
       : null;
 
   const wrapperFunction = (id) => {
@@ -61,7 +60,7 @@ export default function PhotoPage() {
         return (
           <Photo
             key={i}
-            highQualitySrc={urlImages('1200x720', data.fullpath)}
+            highQualitySrc={urlImages('800x600', data.fullpath)}
             wrapperFunction={() => wrapperFunction(i)}
           />
         );
@@ -79,7 +78,7 @@ export default function PhotoPage() {
             if (!cleanUp) {
               photoContext.setPhotoData(data);
               photoContext.setBackground(
-                urlImages('1200x720', data[0].fullpath)
+                urlImages('800x600', data[0].fullpath)
               );
             }
           } else {
@@ -99,6 +98,7 @@ export default function PhotoPage() {
       cleanUp = true;
       photoContext.setPhotoData([]);
     };
+    // eslint-disable-next-line
   }, []);
 
   return (
